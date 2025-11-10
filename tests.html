@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerGuide - Career Assessment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links a:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .nav-links a.active {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .icon {
+            width: 18px;
+            height: 18px;
+        }
+
+        .page {
+            display: none;
+            min-height: calc(100vh - 80px);
+            padding: 2rem 0;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .quiz-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            border: 2px solid transparent;
+        }
+
+        .category-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .category-icon {
+            width: 100%;
+            height: 150px;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+        }
+
+        .category-card h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .category-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .subcategory-option {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .subcategory-option:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+            transform: translateY(-3px);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 5%;
+            transition: width 0.5s ease;
+        }
+
+        .question {
+            margin-bottom: 2.5rem;
+        }
+
+        .question h3 {
+            margin-bottom: 2rem;
+            color: #2c3e50;
+            font-size: 1.3rem;
+            line-height: 1.4;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .option {
+            padding: 1.2rem;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .quiz-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background: #5a6fc8;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .results-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 3rem;
+            border-radius: 20px;
+        }
+
+        .results-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .results-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .recommendation-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .recommendation-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .match-percentage {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            float: right;
+        }
+
+        .salary-range {
+            color: #666;
+            font-style: italic;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .tag {
+            background: #e9f4ff;
+            color: #0066cc;
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .learning-resources {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .resource-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .resource-card:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .resource-card h4 {
+            color: #2c3e50;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        .resource-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .test-info {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 1px solid #e9ecef;
+        }
+
+        .test-info p {
+            margin-bottom: 0.5rem;
+        }
+
+        .test-info strong {
+            color: #2c3e50;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 3rem;
+            border-radius: 20px;
+            margin-top: 3rem;
+            text-align: center;
+            border: 2px solid #e9ecef;
+        }
+
+        .cta-section h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .cta-section p {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .quiz-container {
+                padding: 2rem;
+            }
+            
+            .results-header h2 {
+                font-size: 2rem;
+            }
+            
+            .match-percentage {
+                float: none;
+                display: inline-block;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">🎯 CareerGuide</div>
+            <ul class="nav-links">
+                <li><a href="index.html">
+                    <svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>
+                    Home
+                </a></li>
+                <li><a href="tests.html" class="active">
+                    <svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+                    Tests
+                </a></li>
+                <li><a href="aibot.html">
+                    <svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"/></svg>
+                    AI Bot
+                </a></li>
+                <li><a href="account.html">
+                    <svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
+                    Account
+                </a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Test Categories Page -->
+    <div id="test-categories" class="page active">
+        <div class="container">
+            <div class="quiz-container">
+                <h2 style="text-align: center; margin-bottom: 1rem; font-size: 2.2rem; color: #2c3e50;">Choose Your Career Assessment Category</h2>
+                <p style="text-align: center; color: #666; margin-bottom: 2rem; font-size: 1.1rem;">Select a field of interest to take a specialized 20-question assessment</p>
+                
+                <!-- Search Bar for Categories -->
+                <div style="max-width: 500px; margin: 0 auto 3rem; position: relative;">
+                    <input type="text" id="categorySearchBar" placeholder="Search assessment categories..." 
+                           style="width: 100%; padding: 1rem 1rem 1rem 3rem; border: 2px solid #e9ecef; border-radius: 25px; font-size: 1rem; background: white;"
+                           oninput="searchCategories()">
+                    <svg style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #666;" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+                    </svg>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;" id="categoriesGrid">
+                    <!-- Categories will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subcategory Selection Page -->
+    <div id="subcategory-selection" class="page">
+        <div class="container">
+            <div class="quiz-container">
+                <button class="btn btn-secondary" onclick="showTestCategories()">← Back to Categories</button>
+                <h2 id="subcategory-title" style="text-align: center; margin: 2rem 0 1rem; font-size: 2rem; color: #2c3e50;">Choose Your Specialization</h2>
+                <p id="subcategory-description" style="text-align: center; color: #666; margin-bottom: 3rem; font-size: 1.1rem;">Select a specific area to take a targeted assessment</p>
+                
+                <div id="subcategory-options" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Section -->
+    <div id="quiz-section" class="page">
+        <div class="container">
+            <div class="quiz-container">
+                <button class="btn btn-secondary" onclick="backToSubcategories()">← Back</button>
+                <h2 id="quiz-title" style="text-align: center; margin: 2rem 0 1rem; font-size: 2rem; color: #2c3e50;">Career Assessment Quiz</h2>
+                <p id="quiz-subtitle" style="text-align: center; color: #666; margin-bottom: 2rem;">Answer these questions to get personalized career recommendations</p>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                
+                <div class="question">
+                    <p><strong>Question <span id="questionNumber">1</span> of 20</strong></p>
+                    <h3 id="questionText">Loading question...</h3>
+                    
+                    <div class="options" id="options">
+                    </div>
+                </div>
+                
+                <div class="quiz-nav">
+                    <button class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()" style="display: none;">Previous</button>
+                    <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Page -->
+    <div id="results" class="page">
+        <div class="container">
+            <div class="results-container">
+                <div class="results-header">
+                    <h2>Your Career Assessment Results</h2>
+                    <p>Based on your assessment, here are personalized career recommendations for you</p>
+                </div>
+                
+                <div class="test-info">
+                    <p><strong>Assessment Category:</strong> <span id="result-category">General Career Assessment</span></p>
+                    <p><strong>Specialization:</strong> <span id="result-specialization">All Fields</span></p>
+                    <p><strong>Completed:</strong> <span id="completion-date"></span></p>
+                </div>
+                
+                <h3 style="margin-bottom: 2rem; color: #2c3e50; font-size: 1.8rem;">Top Career Matches</h3>
+                
+                <div id="career-recommendations">
+                    <div class="recommendation-card">
+                        <div class="match-percentage">95%</div>
+                        <h3>Software Developer</h3>
+                        <p>Excellent match for your logical reasoning skills and preference for independent work. Software development offers creative problem-solving opportunities and strong career growth.</p>
+                        <p class="salary-range">💰 Salary Range: $70,000 - $120,000</p>
+                        <div class="tags">
+                            <span class="tag">Programming</span>
+                            <span class="tag">Critical Thinking</span>
+                            <span class="tag">Independent Work</span>
+                            <span class="tag">Problem Solving</span>
+                        </div>
+                        <button class="btn" onclick="window.open('https://www.youtube.com/watch?v=okLhCuKAwQ8', '_blank')">Learn More</button>
+                    </div>
+                    
+                    <div class="recommendation-card">
+                        <div class="match-percentage">89%</div>
+                        <h3>Data Analyst</h3>
+                        <p>Your analytical skills and attention to detail make you perfect for data analysis and business insights. High demand field with excellent growth potential.</p>
+                        <p class="salary-range">💰 Salary Range: $60,000 - $95,000</p>
+                        <div class="tags">
+                            <span class="tag">Analytics</span>
+                            <span class="tag">Problem Solving</span>
+                            <span class="tag">Statistics</span>
+                            <span class="tag">Business Intelligence</span>
+                        </div>
+                        <button class="btn" onclick="window.open('https://www.youtube.com/watch?v=data123', '_blank')">Learn More</button>
+                    </div>
+
+                    <div class="recommendation-card">
+                        <div class="match-percentage">82%</div>
+                        <h3>UX/UI Designer</h3>
+                        <p>Your creative thinking and user-focused mindset align well with UX/UI design. This field combines creativity with analytical thinking.</p>
+                        <p class="salary-range">💰 Salary Range: $65,000 - $110,000</p>
+                        <div class="tags">
+                            <span class="tag">Design</span>
+                            <span class="tag">Creativity</span>
+                            <span class="tag">User Research</span>
+                            <span class="tag">Prototyping</span>
+                        </div>
+                        <button class="btn" onclick="window.open('https://www.youtube.com/watch?v=ux456', '_blank')">Learn More</button>
+                    </div>
+                </div>
+
+                <h3 style="margin: 3rem 0 2rem; color: #2c3e50; font-size: 1.8rem;">Recommended Learning Resources</h3>
+                <div class="learning-resources">
+                    <div class="resource-card">
+                        <h4>Complete Python Programming Course</h4>
+                        <p>freeCodeCamp • 14 hours</p>
+                        <button class="btn" onclick="window.open('https://www.freecodecamp.org/learn/scientific-computing-with-python/', '_blank')">Start Learning</button>
+                    </div>
+                    <div class="resource-card">
+                        <h4>Data Science Fundamentals</h4>
+                        <p>Coursera • 6 weeks</p>
+                        <button class="btn" onclick="window.open('https://www.coursera.org/specializations/data-science-fundamentals', '_blank')">Enroll Now</button>
+                    </div>
+                    <div class="resource-card">
+                        <h4>UX Design Professional Certificate</h4>
+                        <p>Google • 3 months</p>
+                        <button class="btn" onclick="window.open('https://www.coursera.org/professional-certificates/google-ux-design', '_blank')">Get Certified</button>
+                    </div>
+                    <div class="resource-card">
+                        <h4>Software Developer Internships</h4>
+                        <p>LinkedIn Jobs • Various</p>
+                        <button class="btn" onclick="window.open('https://www.linkedin.com/jobs/search/?keywords=software%20developer%20internship', '_blank')">Find Jobs</button>
+                    </div>
+                </div>
+                
+                <div class="cta-section">
+                    <h3>Ready to Start Your Career Journey?</h3>
+                    <p>Take the next step by exploring these career paths in detail or get personalized guidance from our AI assistant.</p>
+                    <div class="button-group">
+                        <button class="btn" onclick="showTestCategories()">Take Another Assessment</button>
+                        <a href="aibot.html" class="btn">Chat with AI Assistant</a>
+                        <a href="index.html" class="btn btn-secondary">Back to Home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentQuestion = 0;
+        let quizAnswers = {};
+        let currentCategory = '';
+        let currentSubcategory = '';
+        let currentQuestions = [];
+
+        // Enhanced test categories and subcategories
+        const testCategories = {
+            engineering: {
+                title: 'Engineering & Technology',
+                description: 'Choose your engineering specialization',
+                icon: '⚙️',
+                gradient: 'linear-gradient(45deg, #FF6B6B, #4ECDC4)',
+                subcategories: {
+                    mechanical: 'Mechanical Engineering',
+                    computer: 'Computer Science & Software',
+                    electronics: 'Electronics Engineering',
+                    information: 'Information Technology',
+                    cloud: 'Cloud Computing & DevOps',
+                    civil: 'Civil & Construction Engineering',
+                    electrical: 'Electrical Engineering',
+                    aerospace: 'Aerospace Engineering',
+                    biomedical: 'Biomedical Engineering',
+                    environmental: 'Environmental Engineering'
+                }
+            },
+            medical: {
+                title: 'Medical & Healthcare',
+                description: 'Select your healthcare specialization',
+                icon: '🏥',
+                gradient: 'linear-gradient(45deg, #667eea, #764ba2)',
+                subcategories: {
+                    general: 'General Medicine (MBBS)',
+                    nursing: 'Nursing & Patient Care',
+                    pharmacy: 'Pharmacy & Pharmaceuticals',
+                    dentistry: 'Dentistry & Oral Health',
+                    surgery: 'Surgery & Surgical Specialties',
+                    research: 'Medical Research & Lab Sciences',
+                    therapy: 'Physical Therapy & Rehabilitation',
+                    veterinary: 'Veterinary Medicine',
+                    ayurveda: 'Ayurveda & Traditional Medicine',
+                    homeopathy: 'Homeopathy & Alternative Medicine',
+                    biotechnology: 'Biotechnology & Bioengineering',
+                    public_health: 'Public Health & Epidemiology'
+                }
+            },
+            business: {
+                title: 'Business & Finance',
+                description: 'Choose your business focus area',
+                icon: '💼',
+                gradient: 'linear-gradient(45deg, #f093fb, #f5576c)',
+                subcategories: {
+                    management: 'Business Management & Strategy',
+                    finance: 'Finance & Investment Banking',
+                    marketing: 'Marketing & Digital Marketing',
+                    consulting: 'Business Consulting',
+                    entrepreneurship: 'Entrepreneurship & Startups',
+                    accounting: 'Accounting & Auditing',
+                    hr: 'Human Resources & Talent Management',
+                    operations: 'Operations & Supply Chain',
+                    sales: 'Sales & Customer Relations',
+                    real_estate: 'Real Estate & Property Management'
+                }
+            },
+            creative: {
+                title: 'Creative Arts & Media',
+                description: 'Select your creative specialization',
+                icon: '🎨',
+                gradient: 'linear-gradient(45deg, #4facfe, #00f2fe)',
+                subcategories: {
+                    design: 'Graphic & Visual Design',
+                    media: 'Digital Media & Content Creation',
+                    writing: 'Creative Writing & Journalism',
+                    photography: 'Photography & Videography',
+                    music: 'Music Production & Audio',
+                    film: 'Film & Video Production',
+                    fashion: 'Fashion Design & Styling',
+                    interior: 'Interior Design & Architecture',
+                    animation: 'Animation & Game Design',
+                    culinary: 'Culinary Arts & Food Science'
+                }
+            },
+            science: {
+                title: 'Science & Research',
+                description: 'Choose your scientific field',
+                icon: '🔬',
+                gradient: 'linear-gradient(45deg, #a8edea, #fed6e3)',
+                subcategories: {
+                    biology: 'Biology & Life Sciences',
+                    chemistry: 'Chemistry & Chemical Sciences',
+                    physics: 'Physics & Applied Physics',
+                    environmental: 'Environmental Science & Ecology',
+                    mathematics: 'Mathematics & Statistics',
+                    geology: 'Geology & Earth Sciences',
+                    astronomy: 'Astronomy & Space Sciences',
+                    forensic: 'Forensic Science & Criminology',
+                    agricultural: 'Agricultural Sciences',
+                    marine: 'Marine Biology & Oceanography'
+                }
+            },
+            psychology: {
+                title: 'Psychology & Mental Health',
+                description: 'Explore psychology specializations',
+                icon: '🧠',
+                gradient: 'linear-gradient(45deg, #667eea, #f093fb)',
+                subcategories: {
+                    clinical: 'Clinical Psychology',
+                    cognitive: 'Cognitive Psychology',
+                    developmental: 'Developmental Psychology',
+                    social: 'Social Psychology',
+                    behavioral: 'Behavioral Psychology',
+                    counseling: 'Counseling & Therapy',
+                    neuropsychology: 'Neuropsychology',
+                    forensic_psych: 'Forensic Psychology',
+                    organizational: 'Organizational Psychology',
+                    sports_psych: 'Sports Psychology'
+                }
+            },
+            education: {
+                title: 'Education & Teaching',
+                description: 'Select your teaching specialization',
+                icon: '📚',
+                gradient: 'linear-gradient(45deg, #ffecd2, #fcb69f)',
+                subcategories: {
+                    primary: 'Primary Education (Elementary)',
+                    secondary: 'Secondary Education (High School)',
+                    higher: 'Higher Education & University',
+                    special: 'Special Education & Learning Disabilities',
+                    online: 'Online Education & E-Learning',
+                    training: 'Corporate Training & Development',
+                    early_childhood: 'Early Childhood Education',
+                    adult: 'Adult Education & Continuing Learning',
+                    vocational: 'Vocational & Technical Training',
+                    curriculum: 'Curriculum Development & Design'
+                }
+            },
+            social: {
+                title: 'Social Work & Community Services',
+                description: 'Focus on social impact careers',
+                icon: '🤝',
+                gradient: 'linear-gradient(45deg, #a8edea, #667eea)',
+                subcategories: {
+                    community: 'Community Social Work',
+                    clinical_social: 'Clinical Social Work',
+                    child_family: 'Child & Family Services',
+                    healthcare_social: 'Healthcare Social Work',
+                    mental_health: 'Mental Health & Substance Abuse',
+                    law_enforcement: 'Law Enforcement & Criminal Justice',
+                    policy: 'Social Policy & Advocacy',
+                    international: 'International Social Work',
+                    gerontology: 'Gerontology & Elder Care',
+                    disability: 'Disability Services & Support'
+                }
+            },
+            legal: {
+                title: 'Legal & Law Services',
+                description: 'Legal career specializations',
+                icon: '⚖️',
+                gradient: 'linear-gradient(45deg, #2c3e50, #667eea)',
+                subcategories: {
+                    corporate: 'Corporate Law',
+                    criminal: 'Criminal Law',
+                    family: 'Family Law',
+                    intellectual: 'Intellectual Property Law',
+                    environmental_law: 'Environmental Law',
+                    international_law: 'International Law',
+                    litigation: 'Litigation & Court Advocacy',
+                    contracts: 'Contract Law',
+                    tax_law: 'Tax Law & Financial Legal',
+                    paralegal: 'Paralegal & Legal Support'
+                }
+            },
+            hospitality: {
+                title: 'Hospitality & Tourism',
+                description: 'Service industry careers',
+                icon: '🏨',
+                gradient: 'linear-gradient(45deg, #f093fb, #ffecd2)',
+                subcategories: {
+                    hotel: 'Hotel Management',
+                    restaurant: 'Restaurant & Food Service',
+                    tourism: 'Tourism & Travel Planning',
+                    event: 'Event Planning & Management',
+                    cruise: 'Cruise & Maritime Hospitality',
+                    resort: 'Resort & Spa Management',
+                    airline: 'Airline & Aviation Services',
+                    catering: 'Catering & Banquet Services',
+                    recreation: 'Recreation & Entertainment',
+                    convention: 'Convention & Conference Management'
+                }
+            }
+        };
+
+        let filteredCategories = Object.keys(testCategories);
+
+        function searchCategories() {
+            const searchTerm = document.getElementById('categorySearchBar').value.toLowerCase();
+            
+            if (searchTerm === '') {
+                filteredCategories = Object.keys(testCategories);
+            } else {
+                filteredCategories = Object.keys(testCategories).filter(key => {
+                    const category = testCategories[key];
+                    return category.title.toLowerCase().includes(searchTerm) ||
+                           category.description.toLowerCase().includes(searchTerm) ||
+                           Object.values(category.subcategories).some(sub => 
+                               sub.toLowerCase().includes(searchTerm)
+                           );
+                });
+            }
+            
+            displayCategories();
+        }
+
+        function displayCategories() {
+            const categoriesGrid = document.getElementById('categoriesGrid');
+            
+            if (filteredCategories.length === 0) {
+                categoriesGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #666;">
+                        <h3>No categories found</h3>
+                        <p>Try adjusting your search terms</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            categoriesGrid.innerHTML = filteredCategories.map(key => {
+                const category = testCategories[key];
+                return `
+                    <div class="category-card" onclick="showSubcategories('${key}')">
+                        <div class="category-icon" style="background: ${category.gradient};">
+                            ${category.icon}
+                        </div>
+                        <h3>${category.title}</h3>
+                        <p>${category.description}</p>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Sample questions for computer science
+        const sampleQuestions = [
+            {
+                question: "What aspect of technology interests you most?",
+                options: [
+                    { text: "Building software applications", value: "software-dev" },
+                    { text: "Analyzing and managing data", value: "data-science" },
+                    { text: "Designing user interfaces", value: "ui-design" },
+                    { text: "Securing systems and networks", value: "security" }
+                ]
+            },
+            {
+                question: "Which programming paradigm appeals to you?",
+                options: [
+                    { text: "Object-oriented programming", value: "oop" },
+                    { text: "Functional programming", value: "functional" },
+                    { text: "Procedural programming", value: "procedural" },
+                    { text: "I'm not sure yet", value: "unsure" }
+                ]
+            },
+            {
+                question: "What type of projects excite you most?",
+                options: [
+                    { text: "Mobile applications", value: "mobile" },
+                    { text: "Web development", value: "web" },
+                    { text: "Game development", value: "games" },
+                    { text: "System software", value: "systems" }
+                ]
+            },
+            {
+                question: "How do you prefer to work on projects?",
+                options: [
+                    { text: "Independently with minimal supervision", value: "independent" },
+                    { text: "In small collaborative teams", value: "small-team" },
+                    { text: "In large structured organizations", value: "large-team" },
+                    { text: "Mix of independent and team work", value: "mixed" }
+                ]
+            },
+            {
+                question: "What motivates you most in your work?",
+                options: [
+                    { text: "Solving complex technical problems", value: "problem-solving" },
+                    { text: "Creating innovative solutions", value: "innovation" },
+                    { text: "Helping others through technology", value: "helping" },
+                    { text: "Building something from scratch", value: "building" }
+                ]
+            },
+            {
+                question: "Which work environment appeals to you?",
+                options: [
+                    { text: "Fast-paced startup environment", value: "startup" },
+                    { text: "Stable corporate environment", value: "corporate" },
+                    { text: "Remote/freelance work", value: "remote" },
+                    { text: "Research and academic settings", value: "academic" }
+                ]
+            },
+            {
+                question: "What's your preferred learning style?",
+                options: [
+                    { text: "Hands-on experimentation", value: "hands-on" },
+                    { text: "Structured courses and tutorials", value: "structured" },
+                    { text: "Reading documentation and books", value: "reading" },
+                    { text: "Learning from peers and mentors", value: "social" }
+                ]
+            },
+            {
+                question: "Which technology trend interests you most?",
+                options: [
+                    { text: "Artificial Intelligence and Machine Learning", value: "ai-ml" },
+                    { text: "Cloud Computing and DevOps", value: "cloud" },
+                    { text: "Cybersecurity", value: "security" },
+                    { text: "Internet of Things (IoT)", value: "iot" }
+                ]
+            },
+            {
+                question: "What's your approach to debugging?",
+                options: [
+                    { text: "Systematic step-by-step analysis", value: "systematic" },
+                    { text: "Trial and error experimentation", value: "experimental" },
+                    { text: "Research similar problems online", value: "research" },
+                    { text: "Ask for help from colleagues", value: "collaborative" }
+                ]
+            },
+            {
+                question: "Which aspect of software development excites you?",
+                options: [
+                    { text: "Frontend user interface design", value: "frontend" },
+                    { text: "Backend system architecture", value: "backend" },
+                    { text: "Database design and optimization", value: "database" },
+                    { text: "Full-stack development", value: "fullstack" }
+                ]
+            },
+            {
+                question: "What's your ideal project timeline?",
+                options: [
+                    { text: "Short sprints with quick results", value: "short" },
+                    { text: "Medium-term projects (1-6 months)", value: "medium" },
+                    { text: "Long-term projects (6+ months)", value: "long" },
+                    { text: "Ongoing maintenance and improvement", value: "ongoing" }
+                ]
+            },
+            {
+                question: "Which programming language interests you most?",
+                options: [
+                    { text: "Python - versatile and beginner-friendly", value: "python" },
+                    { text: "JavaScript - web development focused", value: "javascript" },
+                    { text: "Java - enterprise and mobile apps", value: "java" },
+                    { text: "C++ - system programming and performance", value: "cpp" }
+                ]
+            },
+            {
+                question: "What's your preferred way to stay updated with technology?",
+                options: [
+                    { text: "Technical blogs and articles", value: "blogs" },
+                    { text: "Online courses and certifications", value: "courses" },
+                    { text: "Conferences and meetups", value: "events" },
+                    { text: "Hands-on experimentation", value: "practice" }
+                ]
+            },
+            {
+                question: "Which career aspect is most important to you?",
+                options: [
+                    { text: "High salary potential", value: "salary" },
+                    { text: "Work-life balance", value: "balance" },
+                    { text: "Career growth opportunities", value: "growth" },
+                    { text: "Job security and stability", value: "security" }
+                ]
+            },
+            {
+                question: "What's your approach to new technologies?",
+                options: [
+                    { text: "Early adopter - love trying new things", value: "early-adopter" },
+                    { text: "Wait for stability before adopting", value: "cautious" },
+                    { text: "Follow industry best practices", value: "standard" },
+                    { text: "Focus on mastering existing tools", value: "focused" }
+                ]
+            },
+            {
+                question: "Which type of problem-solving appeals to you?",
+                options: [
+                    { text: "Algorithmic and mathematical problems", value: "algorithmic" },
+                    { text: "User experience and design challenges", value: "design" },
+                    { text: "Performance and optimization issues", value: "performance" },
+                    { text: "Integration and system architecture", value: "architecture" }
+                ]
+            },
+            {
+                question: "What's your preferred feedback style?",
+                options: [
+                    { text: "Regular code reviews and collaboration", value: "collaborative" },
+                    { text: "Automated testing and CI/CD", value: "automated" },
+                    { text: "User feedback and analytics", value: "user-focused" },
+                    { text: "Performance metrics and KPIs", value: "metrics" }
+                ]
+            },
+            {
+                question: "Which industry sector interests you most?",
+                options: [
+                    { text: "Technology and software companies", value: "tech" },
+                    { text: "Financial services and fintech", value: "finance" },
+                    { text: "Healthcare and biotech", value: "healthcare" },
+                    { text: "E-commerce and consumer apps", value: "consumer" }
+                ]
+            },
+            {
+                question: "What's your ideal team size?",
+                options: [
+                    { text: "Solo work - complete autonomy", value: "solo" },
+                    { text: "Small team (2-5 people)", value: "small" },
+                    { text: "Medium team (6-15 people)", value: "medium" },
+                    { text: "Large team (15+ people)", value: "large" }
+                ]
+            },
+            {
+                question: "Which describes your coding philosophy?",
+                options: [
+                    { text: "Clean, readable, and maintainable code", value: "clean" },
+                    { text: "Fast, efficient, and optimized code", value: "efficient" },
+                    { text: "Innovative and experimental approaches", value: "innovative" },
+                    { text: "Practical and get-things-done approach", value: "practical" }
+                ]
+            }
+        ];
+
+        // Page navigation functions
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        function showTestCategories() {
+            showPage('test-categories');
+        }
+
+        function showSubcategories(category) {
+            currentCategory = category;
+            const categoryData = testCategories[category];
+            
+            document.getElementById('subcategory-title').textContent = categoryData.title;
+            document.getElementById('subcategory-description').textContent = categoryData.description;
+            
+            const optionsContainer = document.getElementById('subcategory-options');
+            optionsContainer.innerHTML = '';
+            
+            Object.entries(categoryData.subcategories).forEach(([key, value]) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'subcategory-option';
+                optionDiv.innerHTML = `<h4>${value}</h4><p>Take specialized assessment</p>`;
+                optionDiv.onclick = () => startQuiz(key);
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            showPage('subcategory-selection');
+        }
+
+        function backToSubcategories() {
+            showSubcategories(currentCategory);
+        }
+
+        function startQuiz(subcategory) {
+            currentSubcategory = subcategory;
+            currentQuestions = [...sampleQuestions];
+            currentQuestion = 0;
+            quizAnswers = {};
+            
+            document.getElementById('quiz-title').textContent = `${testCategories[currentCategory].title} Assessment`;
+            document.getElementById('result-category').textContent = testCategories[currentCategory].title;
+            document.getElementById('result-specialization').textContent = testCategories[currentCategory].subcategories[subcategory];
+            
+            loadQuestion();
+            showPage('quiz-section');
+        }
+
+        function loadQuestion() {
+            const question = currentQuestions[currentQuestion];
+            document.getElementById('questionNumber').textContent = currentQuestion + 1;
+            document.getElementById('questionText').textContent = question.question;
+            
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.textContent = option.text;
+                optionDiv.onclick = () => selectOption(index, optionDiv);
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            // Update progress bar
+            const progress = ((currentQuestion + 1) / currentQuestions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            
+            // Update navigation buttons
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            prevBtn.style.display = currentQuestion > 0 ? 'block' : 'none';
+            nextBtn.disabled = !quizAnswers[currentQuestion];
+            nextBtn.textContent = currentQuestion === currentQuestions.length - 1 ? 'Finish' : 'Next';
+        }
+
+        function selectOption(optionIndex, optionElement) {
+            // Remove previous selections
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Select current option
+            optionElement.classList.add('selected');
+            quizAnswers[currentQuestion] = optionIndex;
+            
+            // Enable next button
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < currentQuestions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+
+        function finishQuiz() {
+            // Set completion date
+            document.getElementById('completion-date').textContent = new Date().toLocaleDateString();
+            
+            // Generate personalized results based on answers
+            generateResults();
+            showPage('results');
+        }
+
+        function generateResults() {
+            // This is a simplified result generation
+            // In a real application, you'd have more sophisticated scoring logic
+            const recommendations = [
+                {
+                    name: "Software Developer",
+                    match: Math.floor(Math.random() * 20) + 80,
+                    description: "Excellent match for your logical reasoning skills and preference for independent work. Software development offers creative problem-solving opportunities and strong career growth.",
+                    salary: "$70,000 - $120,000",
+                    tags: ["Programming", "Critical Thinking", "Independent Work", "Problem Solving"]
+                },
+                {
+                    name: "Data Analyst",
+                    match: Math.floor(Math.random() * 20) + 75,
+                    description: "Your analytical skills and attention to detail make you perfect for data analysis and business insights. High demand field with excellent growth potential.",
+                    salary: "$60,000 - $95,000",
+                    tags: ["Analytics", "Problem Solving", "Statistics", "Business Intelligence"]
+                },
+                {
+                    name: "UX/UI Designer",
+                    match: Math.floor(Math.random() * 20) + 70,
+                    description: "Your creative thinking and user-focused mindset align well with UX/UI design. This field combines creativity with analytical thinking.",
+                    salary: "$65,000 - $110,000",
+                    tags: ["Design", "Creativity", "User Research", "Prototyping"]
+                }
+            ];
+
+            // Sort by match percentage
+            recommendations.sort((a, b) => b.match - a.match);
+
+            // Update recommendations in the DOM
+            const container = document.getElementById('career-recommendations');
+            container.innerHTML = recommendations.map(rec => `
+                <div class="recommendation-card">
+                    <div class="match-percentage">${rec.match}%</div>
+                    <h3>${rec.name}</h3>
+                    <p>${rec.description}</p>
+                    <p class="salary-range">💰 Salary Range: ${rec.salary}</p>
+                    <div class="tags">
+                        ${rec.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                    <button class="btn" onclick="window.open('https://www.youtube.com/watch?v=okLhCuKAwQ8', '_blank')">Learn More</button>
+                </div>
+            `).join('');
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            displayCategories();
+            
+            // Check if coming from homepage with specific career test
+            const urlParams = new URLSearchParams(window.location.search);
+            const selectedCareer = urlParams.get('career');
+            const selectedCategory = urlParams.get('category');
+            
+            if (selectedCareer && selectedCategory) {
+                const [mainCategory, subCategory] = selectedCategory.split('/');
+                if (testCategories[mainCategory] && testCategories[mainCategory].subcategories[subCategory]) {
+                    // Automatically start the specific test
+                    setTimeout(() => {
+                        showSubcategories(mainCategory);
+                        setTimeout(() => {
+                            startQuiz(subCategory);
+                        }, 500);
+                    }, 100);
+                }
+            } else {
+                showTestCategories();
+            }
+        });
+    </script>
+</body>
+</html>

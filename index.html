@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerGuide - Discover Your Perfect Career</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links a:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .nav-links a.active {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .icon {
+            width: 18px;
+            height: 18px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .hero-btn:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        .career-paths {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .career-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+        }
+
+        .career-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .career-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .career-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .career-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            background: #e9f4ff;
+            color: #0066cc;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            background: #5a6fc8;
+            transform: translateY(-2px);
+        }
+
+        .show-more-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 3rem auto;
+            display: block;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .show-more-btn:hover {
+            background: #5a6fc8;
+            transform: scale(1.05);
+        }
+
+        .interest-based-section {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin: 3rem 0;
+        }
+
+        .interest-based-section h2 {
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            font-size: 2rem;
+        }
+
+        .interest-based-section .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .featured-videos {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin-top: 3rem;
+        }
+
+        .featured-videos h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+            font-size: 2rem;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .video-card {
+            border: 1px solid #e9ecef;
+            border-radius: 15px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .video-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+            background: white;
+        }
+
+        .video-card h4 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .video-card p {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-section {
+            background: #2c3e50;
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            margin: 4rem 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .stat-item h3 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: #667eea;
+        }
+
+        .stat-item p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            right: 20px;
+            top: 15px;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .modal h2 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .modal .career-icon {
+            font-size: 4rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .salary-info {
+            background: #e8f5e8;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        .skills-section {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .skill-tag {
+            background: #667eea;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .career-paths {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+                margin: 10% auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">🎯 CareerGuide</div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">
+                    <svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>
+                    Home
+                </a></li>
+                <li><a href="tests.html">
+                    <svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+                    Tests
+                </a></li>
+                <li><a href="aibot.html">
+                    <svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"/></svg>
+                    AI Bot
+                </a></li>
+                <li><a href="account.html">
+                    <svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
+                    Account
+                </a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <div class="container">
+            <h1>Discover Your Perfect Career</h1>
+            <p>Explore over 70 career opportunities, take personalized assessments, and get AI-powered recommendations to find the career path that matches your interests, skills, and aspirations.</p>
+            <div class="hero-buttons">
+                <a href="tests.html" class="hero-btn">Take Career Assessment</a>
+                <a href="aibot.html" class="hero-btn">Chat with AI Assistant</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2.2rem; color: #2c3e50;">Explore 70+ Career Opportunities</h2>
+        
+        <div style="max-width: 600px; margin: 0 auto 3rem; position: relative;">
+            <input type="text" id="careerSearchBar" placeholder="Search careers (e.g., Software Developer, Nurse, Engineer...)" 
+                   style="width: 100%; padding: 1rem 1rem 1rem 3rem; border: 2px solid #e9ecef; border-radius: 50px; font-size: 1rem; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1);"
+                   oninput="searchCareers()">
+            <svg style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; color: #666;" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+            </svg>
+        </div>
+        
+        <div class="career-paths" id="careerPaths"></div>
+        
+        <button class="show-more-btn" id="showMoreBtn" onclick="toggleCareers()">Show More Careers</button>
+
+        <div class="interest-based-section" id="interestBasedSection">
+            <h2>Careers Based on Your Interests</h2>
+            <p class="subtitle">Discover career paths that align with your personal interests and hobbies</p>
+            <div class="career-paths" id="interestBasedCareers">
+                <div style="text-align: center; color: #666; font-style: italic; grid-column: 1/-1;">
+                    <p>Sign in to your account and add your interests to see personalized career recommendations here!</p>
+                    <a href="account.html" class="btn" style="margin-top: 1rem;">Set Up Your Interests</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-section">
+            <div class="container">
+                <h2 style="margin-bottom: 2rem; font-size: 2rem;">Trusted by Thousands</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <h3>70+</h3>
+                        <p>Career Paths</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>10k+</h3>
+                        <p>Assessments Taken</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>95%</h3>
+                        <p>User Satisfaction</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>24/7</h3>
+                        <p>AI Support</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="featured-videos">
+            <h2>Featured Career Videos</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 2rem;">Learn from industry experts and career counselors</p>
+            <div class="video-grid">
+                <div class="video-card" onclick="window.open('https://www.youtube.com/watch?v=okLhCuKAwQ8', '_blank')">
+                    <h4>Top 10 High-Paying Careers in 2024</h4>
+                    <p>Career Insights • 12:45</p>
+                    <div style="margin-top: 1rem; color: #667eea; font-size: 0.9rem; font-weight: 500;">▶ Watch on YouTube</div>
+                </div>
+                <div class="video-card" onclick="window.open('https://www.youtube.com/watch?v=XYZ123ABC', '_blank')">
+                    <h4>How to Choose the Right Career Path</h4>
+                    <p>Professional Growth • 8:30</p>
+                    <div style="margin-top: 1rem; color: #667eea; font-size: 0.9rem; font-weight: 500;">▶ Watch on YouTube</div>
+                </div>
+                <div class="video-card" onclick="window.open('https://www.youtube.com/watch?v=ABC456DEF', '_blank')">
+                    <h4>Skills That Will Get You Hired in 2024</h4>
+                    <p>Future Careers • 15:20</p>
+                    <div style="margin-top: 1rem; color: #667eea; font-size: 0.9rem; font-weight: 500;">▶ Watch on YouTube</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="careerModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 CareerGuide. All rights reserved. | Empowering your career journey.</p>
+        </div>
+    </footer>
+
+    <script>
+        const allCareers = [
+            {
+                name: 'Software Developer',
+                icon: '💻',
+                description: 'Build applications and software solutions using various programming languages',
+                tags: ['Programming', 'Technology', 'Innovation'],
+                salary: '₹6,00,000 - ₹1,20,00,000',
+                skills: ['Python', 'JavaScript', 'Problem Solving', 'Git', 'Database Management', 'API Development'],
+                interests: ['Programming', 'Technology', 'Problem Solving', 'Gaming', 'Mathematics'],
+                youtube: 'https://www.youtube.com/watch?v=EezdyIRmC8M',
+                detailedDescription: 'Software developers create computer programs and applications that solve real-world problems. They work with various programming languages, frameworks, and development tools to build everything from mobile apps to enterprise software systems. This role requires strong logical thinking, creativity, and continuous learning as technology evolves rapidly.'
+            },
+            {
+                name: 'Data Scientist',
+                icon: '📊',
+                description: 'Analyze complex data to drive business decisions and insights',
+                tags: ['Analytics', 'Statistics', 'Machine Learning'],
+                salary: '₹7,00,000 - ₹1,40,00,000',
+                skills: ['Python/R', 'SQL', 'Machine Learning', 'Statistics', 'Data Visualization', 'Business Analytics'],
+                interests: ['Mathematics', 'Analytics', 'Science', 'Research', 'Problem Solving'],
+                youtube: 'https://www.youtube.com/watch?v=xC-c7E5PK0Y',
+                detailedDescription: 'Data scientists extract meaningful insights from large datasets to help organizations make informed decisions. They combine statistical analysis, machine learning, and domain expertise to identify patterns, predict trends, and solve complex business problems. This field is rapidly growing across all industries.'
+            },
+            {
+                name: 'UX/UI Designer',
+                icon: '🎨',
+                description: 'Create intuitive and beautiful user experiences for digital products',
+                tags: ['Design', 'Creativity', 'User-Focused'],
+                salary: '₹5,50,000 - ₹1,00,00,000',
+                skills: ['Figma', 'Adobe Creative Suite', 'User Research', 'Prototyping', 'Wireframing', 'Design Systems'],
+                interests: ['Design', 'Art', 'Psychology', 'Technology', 'Problem Solving'],
+                youtube: 'https://www.youtube.com/watch?v=c9Wg6Cb_YlU',
+                detailedDescription: 'UX/UI designers focus on creating user-friendly interfaces and experiences for websites, mobile apps, and software. They research user needs, create wireframes and prototypes, and work closely with developers to ensure the final product is both functional and aesthetically pleasing.'
+            },
+            {
+                name: 'Cybersecurity Analyst',
+                icon: '🔒',
+                description: 'Protect systems and data from cyber threats and vulnerabilities',
+                tags: ['Security', 'Risk Assessment', 'Technology'],
+                salary: '₹6,50,000 - ₹1,20,00,000',
+                skills: ['Network Security', 'Incident Response', 'Risk Assessment', 'Penetration Testing', 'Compliance', 'Forensics'],
+                interests: ['Technology', 'Problem Solving', 'Security', 'Investigation', 'Critical Thinking'],
+                youtube: 'https://www.youtube.com/watch?v=inWWhr5tnEA',
+                detailedDescription: 'Cybersecurity analysts protect organizations from digital threats by monitoring networks, investigating security breaches, and implementing security measures. With cyber threats constantly evolving, this field offers excellent job security and growth opportunities.'
+            },
+            {
+                name: 'Digital Marketing Manager',
+                icon: '📱',
+                description: 'Drive growth through digital marketing strategies and campaigns',
+                tags: ['Marketing', 'Social Media', 'Analytics'],
+                salary: '₹4,20,000 - ₹80,00,000',
+                skills: ['SEO/SEM', 'Social Media Marketing', 'Content Strategy', 'Analytics', 'PPC Advertising', 'Email Marketing'],
+                interests: ['Marketing', 'Social Media', 'Writing', 'Analytics', 'Creativity'],
+                youtube: 'https://www.youtube.com/watch?v=nU-IIXBWlS4',
+                detailedDescription: 'Digital marketing managers develop and execute online marketing strategies to promote products or services. They manage social media accounts, create content, analyze campaign performance, and optimize marketing funnels to drive customer acquisition and retention.'
+            },
+            {
+                name: 'Machine Learning Engineer',
+                icon: '🤖',
+                description: 'Develop AI systems and machine learning models for real-world applications',
+                tags: ['AI', 'Programming', 'Mathematics'],
+                salary: '₹8,00,000 - ₹1,60,00,000',
+                skills: ['Python', 'TensorFlow', 'Deep Learning', 'Statistics', 'MLOps', 'Computer Vision'],
+                interests: ['AI/ML', 'Mathematics', 'Programming', 'Research', 'Innovation'],
+                youtube: 'https://www.youtube.com/watch?v=z-EtmaFJieY',
+                detailedDescription: 'Machine learning engineers build and deploy AI systems that can learn and make predictions from data. They work on applications like recommendation systems, computer vision, natural language processing, and autonomous systems. This is one of the fastest-growing fields in technology.'
+            },
+            {
+                name: 'Product Manager',
+                icon: '🚀',
+                description: 'Guide product development from conception to launch and beyond',
+                tags: ['Strategy', 'Leadership', 'Innovation'],
+                salary: '₹7,50,000 - ₹1,45,00,000',
+                skills: ['Product Strategy', 'Market Research', 'Project Management', 'Analytics', 'Communication', 'Roadmap Planning'],
+                interests: ['Business', 'Strategy', 'Leadership', 'Innovation', 'Problem Solving'],
+                youtube: 'https://www.youtube.com/watch?v=yUOC-Y0f5ZQ',
+                detailedDescription: 'Product managers are responsible for the strategy, roadmap, and feature definition of products. They work with engineering, design, marketing, and sales teams to ensure products meet market needs and business objectives. This role requires strong analytical and communication skills.'
+            },
+            {
+                name: 'Registered Nurse',
+                icon: '👩‍⚕️',
+                description: 'Provide patient care and medical support in healthcare settings',
+                tags: ['Healthcare', 'Compassion', 'Medical Care'],
+                salary: '₹5,00,000 - ₹7,50,000',
+                skills: ['Patient Care', 'Medical Knowledge', 'Communication', 'Critical Thinking', 'Documentation', 'Emergency Response'],
+                interests: ['Healthcare', 'Helping Others', 'Science', 'Medicine', 'Community Service'],
+                youtube: 'https://www.youtube.com/watch?v=94QC8fXfnKA',
+                detailedDescription: 'Registered nurses provide and coordinate patient care, educate patients about health conditions, and provide support to patients and families. They work in hospitals, clinics, and other healthcare facilities, playing a crucial role in patient recovery and wellness.'
+            },
+            {
+                name: 'Financial Advisor',
+                icon: '💰',
+                description: 'Help clients manage their finances and investment portfolios',
+                tags: ['Finance', 'Consulting', 'Planning'],
+                salary: '₹4,20,000 - ₹1,00,00,000',
+                skills: ['Financial Planning', 'Investment Analysis', 'Risk Management', 'Tax Planning', 'Client Relations', 'Market Analysis'],
+                interests: ['Finance', 'Business', 'Helping Others', 'Analytics', 'Economics'],
+                youtube: 'https://www.youtube.com/watch?v=Lq9anvL3y1g',
+                detailedDescription: 'Financial advisors help individuals and businesses make informed financial decisions. They assess clients financial situations, develop investment strategies, and provide guidance on retirement planning, insurance, and tax strategies. Building trust and long-term relationships is key to success.'
+            },
+            {
+                name: 'Elementary Teacher',
+                icon: '👩‍🏫',
+                description: 'Educate and inspire young students in foundational subjects',
+                tags: ['Education', 'Communication', 'Mentoring'],
+                salary: '₹3,50,000 - ₹5,50,000',
+                skills: ['Curriculum Development', 'Classroom Management', 'Child Psychology', 'Communication', 'Patience', 'Creativity'],
+                interests: ['Education', 'Children', 'Teaching', 'Community Service', 'Personal Development'],
+                youtube: 'https://www.youtube.com/watch?v=8_PXjYcDyl0',
+                detailedDescription: 'Elementary teachers work with young children to build fundamental academic and social skills. They create lesson plans, assess student progress, and work with parents to support student development. This career is rewarding for those passionate about shaping young minds.'
+            },
+            {
+                name: 'Graphic Designer',
+                icon: '🖼️',
+                description: 'Create visual content for various media platforms and brands',
+                tags: ['Design', 'Creativity', 'Visual Arts'],
+                salary: '₹3,50,000 - ₹6,00,000',
+                skills: ['Adobe Creative Suite', 'Typography', 'Layout Design', 'Brand Identity', 'Print Design', 'Digital Design'],
+                interests: ['Design', 'Art', 'Creativity', 'Visual Arts', 'Branding'],
+                youtube: 'https://www.youtube.com/watch?v=WZQYt5sQ4Sk',
+                detailedDescription: 'Graphic designers create visual concepts to communicate ideas that inspire, inform, or captivate consumers. They work on projects rangingfrom logos and brochures to websites and packaging, combining art and technology to communicate messages effectively.'
+            },
+            {
+                name: 'Civil Engineer',
+                icon: '🏗️',
+                description: 'Design and oversee construction of infrastructure projects',
+                tags: ['Engineering', 'Construction', 'Infrastructure'],
+                salary: '₹5,50,000 - ₹8,50,000',
+                skills: ['AutoCAD', 'Project Management', 'Structural Analysis', 'Construction Management', 'Environmental Planning', 'Surveying'],
+                interests: ['Engineering', 'Construction', 'Mathematics', 'Problem Solving', 'Environment'],
+                youtube: 'https://www.youtube.com/watch?v=LNjkJMBwMQc',
+                detailedDescription: 'Civil engineers design, build, and maintain infrastructure projects like roads, bridges, buildings, and water supply systems. They ensure projects are safe, sustainable, and cost-effective while considering environmental impact and community needs.'
+            },
+            {
+                name: 'Marketing Specialist',
+                icon: '📢',
+                description: 'Develop and execute marketing campaigns to promote products or services',
+                tags: ['Marketing', 'Communication', 'Strategy'],
+                salary: '₹3,80,000 - ₹6,50,000',
+                skills: ['Market Research', 'Content Creation', 'Campaign Management', 'Brand Strategy', 'Customer Analysis', 'Digital Marketing'],
+                interests: ['Marketing', 'Communication', 'Creativity', 'Business', 'Writing'],
+                youtube: 'https://www.youtube.com/watch?v=BUUK-v_dGHY',
+                detailedDescription: 'Marketing specialists research market conditions to examine potential sales of products or services. They develop pricing strategies, identify customer demographics, and create marketing campaigns that effectively reach target audiences and drive business growth.'
+            },
+            {
+                name: 'Mechanical Engineer',
+                icon: '⚙️',
+                description: 'Design and develop mechanical systems and products',
+                tags: ['Engineering', 'CAD', 'Problem Solving'],
+                salary: '₹6,00,000 - ₹9,50,000',
+                skills: ['CAD Software', 'Thermodynamics', 'Materials Science', 'Manufacturing Processes', 'Project Management', 'Quality Control'],
+                interests: ['Engineering', 'Technology', 'Problem Solving', 'Mathematics', 'Innovation'],
+                youtube: 'https://www.youtube.com/watch?v=ks2aXphis6M',
+                detailedDescription: 'Mechanical engineers research, design, develop, build, and test mechanical and thermal sensors and devices. They work on everything from engines and machines to HVAC systems and manufacturing equipment, combining creativity with technical expertise.'
+            },
+            {
+                name: 'Content Writer',
+                icon: '✍️',
+                description: 'Create engaging written content for websites, blogs, and marketing',
+                tags: ['Writing', 'Communication', 'SEO'],
+                salary: '₹3,00,000 - ₹5,50,000',
+                skills: ['Content Strategy', 'SEO Writing', 'Research', 'Editing', 'Social Media', 'WordPress'],
+                interests: ['Writing', 'Communication', 'Marketing', 'Research', 'Creativity'],
+                youtube: 'https://www.youtube.com/watch?v=CaJF9Ufk-XI',
+                detailedDescription: 'Content writers create written material for websites, blogs, marketing campaigns, and social media. They research topics, optimize content for search engines, and adapt their writing style to match brand voice and target audience preferences.'
+            },
+            {
+                name: 'Pharmacist',
+                icon: '💊',
+                description: 'Dispense medications and provide pharmaceutical care',
+                tags: ['Healthcare', 'Medicine', 'Patient Care'],
+                salary: '₹10,00,000 - ₹12,50,000',
+                skills: ['Pharmacology', 'Patient Counseling', 'Drug Interactions', 'Prescription Management', 'Clinical Knowledge', 'Attention to Detail'],
+                interests: ['Healthcare', 'Science', 'Helping Others', 'Medicine', 'Chemistry'],
+                youtube: 'https://www.youtube.com/watch?v=4OWC7rCzcGc',
+                detailedDescription: 'Pharmacists dispense prescription medications and provide expertise about the safe use of prescriptions. They also conduct health screenings, provide immunizations, and offer advice on healthy lifestyles and disease prevention.'
+            },
+            {
+                name: 'Web Developer',
+                icon: '🌐',
+                description: 'Build and maintain websites and web applications',
+                tags: ['Programming', 'Web Technology', 'Frontend'],
+                salary: '₹4,80,000 - ₹8,00,000',
+                skills: ['HTML/CSS', 'JavaScript', 'React/Angular', 'Node.js', 'Database Management', 'Responsive Design'],
+                interests: ['Programming', 'Web Development', 'Technology', 'Design', 'Problem Solving'],
+                youtube: 'https://www.youtube.com/watch?v=erEgovG9WBs',
+                detailedDescription: 'Web developers create and maintain websites and web applications. They work on both the visual aspects users see (frontend) and the server-side functionality (backend), ensuring websites are functional, user-friendly, and optimized for performance.'
+            },
+            {
+                name: 'Physical Therapist',
+                icon: '🏃‍♂️',
+                description: 'Help patients recover from injuries and improve mobility',
+                tags: ['Healthcare', 'Rehabilitation', 'Patient Care'],
+                salary: '₹7,20,000 - ₹9,00,000',
+                skills: ['Anatomy', 'Therapeutic Techniques', 'Patient Assessment', 'Treatment Planning', 'Communication', 'Manual Therapy'],
+                interests: ['Healthcare', 'Fitness', 'Helping Others', 'Human Body', 'Sports'],
+                youtube: 'https://www.youtube.com/watch?v=mBt3ktW9d3A',
+                detailedDescription: 'Physical therapists help injured or ill people improve movement and manage pain. They examine patients, develop treatment plans, and use various techniques including exercises, stretching, and hands-on therapy to help patients recover mobility and function.'
+            },
+            {
+                name: 'Veterinarian',
+                icon: '🐾',
+                description: 'Provide medical care for animals',
+                tags: ['Healthcare', 'Animal Care', 'Medicine'],
+                salary: '₹6,50,000 - ₹10,00,000',
+                skills: ['Animal Anatomy', 'Surgical Procedures', 'Diagnostic Imaging', 'Client Communication', 'Emergency Care', 'Preventive Medicine'],
+                interests: ['Animals', 'Healthcare', 'Science', 'Helping Others', 'Biology'],
+                youtube: 'https://www.youtube.com/watch?v=NcfzHTOZo1Q',
+                detailedDescription: 'Veterinarians diagnose and treat diseases and injuries in animals. They perform surgeries, prescribe medications, and educate pet owners about animal care. Some specialize in particular types of animals or specific medical areas.'
+            },
+            {
+                name: 'Accountant',
+                icon: '🧮',
+                description: 'Manage financial records and tax preparations',
+                tags: ['Finance', 'Accounting', 'Detail-Oriented'],
+                salary: '₹4,20,000 - ₹6,80,000',
+                skills: ['Financial Analysis', 'Tax Preparation', 'Bookkeeping', 'Excel', 'QuickBooks', 'Auditing'],
+                interests: ['Finance', 'Mathematics', 'Business', 'Organization', 'Problem Solving'],
+                youtube: 'https://www.youtube.com/watch?v=S6kTg2EP3ys',
+                detailedDescription: 'Accountants prepare and examine financial records, ensure records are accurate, and ensure taxes are paid properly and on time. They work with individuals, small businesses, and large corporations to maintain accurate financial records and provide financial advice.'
+            },
+            {
+                name: 'Architect',
+                icon: '🏛️',
+                description: 'Design buildings and architectural structures',
+                tags: ['Design', 'Architecture', 'Engineering'],
+                salary: '₹6,00,000 - ₹10,00,000',
+                skills: ['CAD Software', 'Building Codes', 'Design Principles', 'Project Management', 'Structural Knowledge', '3D Modeling'],
+                interests: ['Design', 'Art', 'Engineering', 'Problem Solving', 'Environment'],
+                youtube: 'https://www.youtube.com/watch?v=U9O_-qlMswU',
+                detailedDescription: 'Architects plan and design houses, buildings, and other structures. They meet with clients, develop design concepts, create detailed plans, and oversee construction to ensure the design is implemented correctly while meeting safety and building code requirements.'
+            },
+            {
+                name: 'Social Worker',
+                icon: '🤝',
+                description: 'Help individuals and communities solve problems',
+                tags: ['Social Work', 'Community Service', 'Advocacy'],
+                salary: '₹3,80,000 - ₹6,00,000',
+                skills: ['Case Management', 'Counseling', 'Crisis Intervention', 'Community Resources', 'Documentation', 'Advocacy'],
+                interests: ['Helping Others', 'Community Service', 'Psychology', 'Social Justice', 'Communication'],
+                youtube: 'https://www.youtube.com/watch?v=G2J5yPSlJ7Q',
+                detailedDescription: 'Social workers help people solve and cope with problems in their everyday lives. They work with individuals, families, and communities to improve social conditions and help people overcome challenges such as poverty, discrimination, and mental health issues.'
+            },
+            {
+                name: 'Dental Hygienist',
+                icon: '🦷',
+                description: 'Provide preventive dental care and oral health education',
+                tags: ['Healthcare', 'Dental Care', 'Prevention'],
+                salary: '₹6,00,000 - ₹7,20,000',
+                skills: ['Dental Procedures', 'Patient Education', 'Radiography', 'Infection Control', 'Assessment', 'Documentation'],
+                interests: ['Healthcare', 'Helping Others', 'Science', 'Detail-oriented', 'Patient Care'],
+                youtube: 'https://www.youtube.com/watch?v=GQG0OoOOOOE',
+                detailedDescription: 'Dental hygienists clean teeth, examine patients for signs of oral diseases, and provide preventive dental care. They also educate patients about oral hygiene and may take dental X-rays or apply fluoride treatments.'
+            },
+            {
+                name: 'Chef',
+                icon: '👨‍🍳',
+                description: 'Create and prepare culinary dishes and manage kitchen operations',
+                tags: ['Culinary', 'Creativity', 'Management'],
+                salary: '₹3,50,000 - ₹6,80,000',
+                skills: ['Cooking Techniques', 'Menu Planning', 'Food Safety', 'Kitchen Management', 'Creativity', 'Time Management'],
+                interests: ['Cooking', 'Creativity', 'Food', 'Management', 'Art'],
+                youtube: 'https://www.youtube.com/watch?v=rI7O9yl_ebs',
+                detailedDescription: 'Chefs plan menus, oversee food preparation, and manage kitchen staff. They create recipes, ensure food quality and safety, control food costs, and may specialize in particular types of cuisine or cooking techniques.'
+            },
+            {
+                name: 'Police Officer',
+                icon: '👮‍♂️',
+                description: 'Maintain public safety and enforce laws',
+                tags: ['Law Enforcement', 'Public Safety', 'Community Service'],
+                salary: '₹4,20,000 - ₹7,20,000',
+                skills: ['Law Knowledge', 'Communication', 'Physical Fitness', 'Crisis Management', 'Investigation', 'Report Writing'],
+                interests: ['Public Safety', 'Community Service', 'Law', 'Helping Others', 'Justice'],
+                youtube: 'https://www.youtube.com/watch?v=4oVJoO7N1sM',
+                detailedDescription: 'Police officers protect lives and property by enforcing laws, responding to emergency calls, investigating crimes, and working with community members to prevent crime. They may patrol assigned areas, write reports, and testify in court.'
+            },
+            {
+                name: 'Photographer',
+                icon: '📸',
+                description: 'Capture and create visual stories through images',
+                tags: ['Photography', 'Creativity', 'Visual Arts'],
+                salary: '₹3,00,000 - ₹6,50,000',
+                skills: ['Camera Operation', 'Photo Editing', 'Lighting', 'Composition', 'Client Relations', 'Post-Production'],
+                interests: ['Photography', 'Art', 'Creativity', 'Visual Arts', 'Travel'],
+                youtube: 'https://www.youtube.com/watch?v=pMwW-X2fCi0',
+                detailedDescription: 'Photographers use cameras and lighting equipment to capture images for commercial, artistic, or documentary purposes. They may specialize in areas like weddings, portraits, nature, or commercial photography, and often edit their work using digital software.'
+            },
+            {
+                name: 'Electrician',
+                icon: '⚡',
+                description: 'Install and maintain electrical systems',
+                tags: ['Electrical', 'Technical', 'Problem Solving'],
+                salary: '₹4,80,000 - ₹7,20,000',
+                skills: ['Electrical Systems', 'Blueprint Reading', 'Safety Procedures', 'Troubleshooting', 'Hand Tools', 'Code Knowledge'],
+                interests: ['Technology', 'Problem Solving', 'Hands-on Work', 'Engineering', 'Safety'],
+                youtube: 'https://www.youtube.com/watch?v=ZDLC3ESI9Gs',
+                detailedDescription: 'Electricians install, maintain, and repair electrical power, communications, lighting, and control systems in homes, businesses, and factories. They read blueprints, use various tools and testing equipment, and must stay current with electrical codes and safety regulations.'
+            }
+        ];
+
+        const interestCareerMapping = {
+            'Programming': ['Software Developer', 'Web Developer', 'Machine Learning Engineer'],
+            'Web Development': ['Web Developer', 'Software Developer', 'UX/UI Designer'],
+            'Data Science': ['Data Scientist', 'Machine Learning Engineer', 'Business Analyst'],
+            'Design': ['UX/UI Designer', 'Graphic Designer', 'Architect'],
+            'Photography': ['Photographer', 'Graphic Designer', 'Marketing Specialist'],
+            'Writing': ['Content Writer', 'Marketing Specialist', 'Social Worker'],
+            'Music': ['Content Writer', 'Marketing Specialist', 'Graphic Designer'],
+            'Sports': ['Physical Therapist', 'Personal Trainer', 'Sports Medicine'],
+            'Reading': ['Content Writer', 'Teacher', 'Social Worker'],
+            'Travel': ['Photographer', 'Content Writer', 'Marketing Specialist'],
+            'Cooking': ['Chef', 'Nutritionist', 'Food Scientist'],
+            'Fitness': ['Physical Therapist', 'Personal Trainer', 'Sports Medicine'],
+            'Gaming': ['Software Developer', 'UX/UI Designer', 'Game Designer'],
+            'Art': ['Graphic Designer', 'UX/UI Designer', 'Architect'],
+            'Science': ['Data Scientist', 'Research Scientist', 'Engineer'],
+            'Business': ['Product Manager', 'Business Analyst', 'Marketing Manager'],
+            'Healthcare': ['Registered Nurse', 'Physical Therapist', 'Pharmacist'],
+            'Education': ['Elementary Teacher', 'Training Specialist', 'Curriculum Developer'],
+            'Finance': ['Financial Advisor', 'Accountant', 'Business Analyst'],
+            'Marketing': ['Digital Marketing Manager', 'Marketing Specialist', 'Content Writer'],
+            'Technology': ['Software Developer', 'Cybersecurity Analyst', 'Web Developer'],
+            'Mathematics': ['Data Scientist', 'Financial Advisor', 'Engineer'],
+            'Problem Solving': ['Software Developer', 'Engineer', 'Cybersecurity Analyst'],
+            'Animals': ['Veterinarian', 'Veterinary Technician', 'Animal Behaviorist'],
+            'Helping Others': ['Social Worker', 'Registered Nurse', 'Teacher'],
+            'Communication': ['Marketing Specialist', 'Social Worker', 'Teacher'],
+            'Creativity': ['Graphic Designer', 'UX/UI Designer', 'Photographer']
+        };
+
+        let showingAllCareers = false;
+        let userInterests = [];
+        let filteredCareers = allCareers;
+
+        function searchCareers() {
+            const searchTerm = document.getElementById('careerSearchBar').value.toLowerCase();
+            
+            if (searchTerm === '') {
+                filteredCareers = allCareers;
+            } else {
+                filteredCareers = allCareers.filter(career => 
+                    career.name.toLowerCase().includes(searchTerm) ||
+                    career.description.toLowerCase().includes(searchTerm) ||
+                    career.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
+                    career.skills.some(skill => skill.toLowerCase().includes(searchTerm))
+                );
+            }
+            
+            displayCareers(showingAllCareers);
+        }
+
+        function displayCareers(showAll = false) {
+            const careerPaths = document.getElementById('careerPaths');
+            const careersToShow = showAll ? filteredCareers : filteredCareers.slice(0, 12);
+            
+            if (careersToShow.length === 0) {
+                careerPaths.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #666;">
+                        <h3>No careers found</h3>
+                        <p>Try adjusting your search terms or browse all careers</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            careerPaths.innerHTML = careersToShow.map(career => `
+                <div class="career-card">
+                    <div class="career-icon">${career.icon}</div>
+                    <h3>${career.name}</h3>
+                    <p>${career.description}</p>
+                    <div class="tags">
+                        ${career.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                    <button class="btn" onclick="showCareerDetail('${career.name}')">Learn More</button>
+                </div>
+            `).join('');
+        }
+
+        function addToCareerInterests(careerName) {
+            try {
+                let careerInterests = JSON.parse(localStorage.getItem('careerInterests') || '[]');
+                
+                if (!careerInterests.includes(careerName)) {
+                    careerInterests.push(careerName);
+                    localStorage.setItem('careerInterests', JSON.stringify(careerInterests));
+                    alert(`${careerName} has been added to your career interests! View them in your account page.`);
+                } else {
+                    alert(`${careerName} is already in your career interests.`);
+                }
+            } catch (e) {
+                alert('Added to career interests! Please visit your account page to view all interests.');
+            }
+            
+            document.getElementById('careerModal').style.display = 'none';
+        }
+
+        function takeCareerTest(careerName) {
+            const careerToCategory = {
+                'Software Developer': 'engineering/computer',
+                'Data Scientist': 'engineering/computer',
+                'Machine Learning Engineer': 'engineering/computer',
+                'Web Developer': 'engineering/computer',
+                'Cybersecurity Analyst': 'engineering/computer',
+                'Registered Nurse': 'medical/nursing',
+                'Physical Therapist': 'medical/therapy',
+                'Pharmacist': 'medical/pharmacy',
+                'Veterinarian': 'medical/veterinary',
+                'Financial Advisor': 'business/finance',
+                'Marketing Specialist': 'business/marketing',
+                'Digital Marketing Manager': 'business/marketing',
+                'Elementary Teacher': 'education/primary',
+                'Graphic Designer': 'creative/design',
+                'UX/UI Designer': 'creative/design',
+                'Photographer': 'creative/media',
+                'Chef': 'creative/culinary',
+                'Mechanical Engineer': 'engineering/mechanical',
+                'Civil Engineer': 'engineering/civil',
+                'Electrician': 'engineering/electrical',
+                'Content Writer': 'creative/writing',
+                'Architect': 'engineering/civil',
+                'Social Worker': 'social/community',
+                'Accountant': 'business/finance',
+                'Police Officer': 'social/law-enforcement'
+            };
+
+            const category = careerToCategory[careerName] || 'general/assessment';
+            
+            try {
+                localStorage.setItem('selectedCareerTest', careerName);
+                localStorage.setItem('selectedTestCategory', category);
+            } catch (e) {
+                console.log('localStorage not available');
+            }
+            
+            window.location.href = `tests.html?career=${encodeURIComponent(careerName)}&category=${category}`;
+        }
+
+        function showCareerDetail(careerName) {
+            const career = allCareers.find(c => c.name === careerName);
+            if (!career) return;
+
+            const modalContent = document.getElementById('modalContent');
+            modalContent.innerHTML = `
+                <div class="career-icon">${career.icon}</div>
+                <h2>${career.name}</h2>
+                <p style="margin-bottom: 2rem; color: #666; font-size: 1.1rem;">${career.detailedDescription}</p>
+                
+                <div class="salary-info">
+                    <h4 style="margin-bottom: 0.5rem; color: #2c3e50;">💰 Expected Salary Range</h4>
+                    <p style="font-size: 1.2rem; font-weight: 600; color: #28a745;">${career.salary}</p>
+                    <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">*Salary varies based on location, experience, and company size</p>
+                </div>
+
+                <div class="skills-section">
+                    <h4 style="margin-bottom: 1rem; color: #2c3e50;">🎯 Required Skills</h4>
+                    <div class="skills-list">
+                        ${career.skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem; text-align: center;">
+                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                        <button class="btn" onclick="addToCareerInterests('${career.name}')" style="background: #28a745; padding: 1rem 1.5rem;">
+                            ❤️ I am Interested
+                        </button>
+                        <button class="btn" onclick="takeCareerTest('${career.name}')" style="background: #667eea; padding: 1rem 1.5rem;">
+                            📝 Take Test
+                        </button>
+                    </div>
+                    <button class="btn" onclick="window.open('${career.youtube}', '_blank')" style="padding: 1rem 2rem; font-size: 1.1rem; background: #dc3545;">
+                        🎥 Watch Career Video on YouTube
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('careerModal').style.display = 'block';
+        }
+
+        function displayInterestBasedCareers() {
+            const interestBasedContainer = document.getElementById('interestBasedCareers');
+            
+            try {
+                const savedInterests = localStorage.getItem('userInterests');
+                if (savedInterests) {
+                    userInterests = JSON.parse(savedInterests);
+                }
+            } catch (e) {
+                userInterests = [];
+            }
+
+            if (userInterests.length === 0) {
+                interestBasedContainer.innerHTML = `
+                    <div style="text-align: center; color: #666; font-style: italic; grid-column: 1/-1;">
+                        <p>Sign in to your account and add your interests to see personalized career recommendations here!</p>
+                        <a href="account.html" class="btn" style="margin-top: 1rem;">Set Up Your Interests</a>
+                    </div>
+                `;
+                return;
+            }
+
+            const recommendedCareers = new Set();
+            
+            userInterests.forEach(interest => {
+                if (interestCareerMapping[interest]) {
+                    interestCareerMapping[interest].forEach(careerName => {
+                        const career = allCareers.find(c => c.name === careerName);
+                        if (career) {
+                            recommendedCareers.add(career);
+                        }
+                    });
+                }
+            });
+
+            const recommendedArray = Array.from(recommendedCareers).slice(0, 6);
+
+            if (recommendedArray.length > 0) {
+                interestBasedContainer.innerHTML = recommendedArray.map(career => `
+                    <div class="career-card">
+                        <div class="career-icon">${career.icon}</div>
+                        <h3>${career.name}</h3>
+                        <p>${career.description}</p>
+                        <div class="tags">
+                            ${career.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                        <button class="btn" onclick="showCareerDetail('${career.name}')">Learn More</button>
+                    </div>
+                `).join('');
+            } else {
+                interestBasedContainer.innerHTML = `
+                    <div style="text-align: center; color: #666; grid-column: 1/-1;">
+                        <p>We couldn't find matching careers for your current interests.</p>
+                        <p>Try adding more interests in your <a href="account.html" style="color: #667eea;">account settings</a>.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function toggleCareers() {
+            showingAllCareers = !showingAllCareers;
+            displayCareers(showingAllCareers);
+            
+            const btn = document.getElementById('showMoreBtn');
+            btn.textContent = showingAllCareers ? 'Show Less Careers' : 'Show More Careers';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            displayCareers();
+            displayInterestBasedCareers();
+
+            const modal = document.getElementById('careerModal');
+            const closeBtn = document.querySelector('.close');
+
+            closeBtn.onclick = function() {
+                modal.style.display = 'none';
+            }
+
+            window.onclick = function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            }
+
+            setInterval(displayInterestBasedCareers, 5000);
+        });
+    </script>
+</body>
+</html>

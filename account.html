@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerGuide - Account Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            width: 100%;
+        }
+
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .nav-links a.active {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 100%;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .profile-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            width: 100%;
+            margin: 3rem auto;
+        }
+
+        .profile-section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-section h3 {
+            color: #2c3e50;
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #f8f9fa;
+            padding-bottom: 0.5rem;
+        }
+
+        .profile-avatar {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .avatar-circle {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
+        }
+
+        .avatar-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .avatar-email {
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .add-interest-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .add-btn {
+            width: 50px;
+            height: 42px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .add-btn:hover {
+            background: #5a6fc8;
+            transform: scale(1.05);
+        }
+
+        .interest-tag {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            margin: 0.3rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .interest-tag:hover {
+            background: #dc3545;
+        }
+
+        .suggested-tag {
+            display: inline-block;
+            background: #f8f9fa;
+            color: #666;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            margin: 0.3rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .suggested-tag:hover {
+            background: #e9f4ff;
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin: 2rem auto 3rem;
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+        }
+
+        .stats-card {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .stats-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }
+
+        .stats-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            background: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .activity-text {
+            flex: 1;
+        }
+
+        .activity-text h5 {
+            margin-bottom: 0.3rem;
+            color: #2c3e50;
+        }
+
+        .activity-text p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .profile-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .save-btn, .logout-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">🎯 CareerGuide</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="tests.html">Tests</a></li>
+                <li><a href="aibot.html">AI Bot</a></li>
+                <li><a href="account.html" class="active">Account</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <div class="container">
+            <h1>Account Profile</h1>
+            <p>Manage your personal information, interests, and career preferences</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="success-message" id="successMessage">
+            Profile updated successfully!
+        </div>
+        
+        <div class="profile-container">
+            <div class="profile-section">
+                <h3>Personal Information</h3>
+                
+                <div class="profile-avatar">
+                    <div class="avatar-circle" id="avatarCircle">JD</div>
+                    <div class="avatar-name" id="displayName">currentUser.name</div>
+                    <div class="avatar-email" id="displayEmail">john.doe@email.com</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="displayName" value="Jineshi Jain" >
+                </div>
+                
+                <div class="form-group">
+                    <label>Age</label>
+                    <input type="number" id="userAge" value="25" min="16" max="100">
+                </div>
+                
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="userPhone" value="+1 (555) 123-4567">
+                </div>
+                
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="displayEmail" value="jineshi@gmail.com">
+                </div>
+                
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="userLocation" value="New York, NY">
+                </div>
+
+                <div class="stats-card">
+                    <span class="stats-number" id="assessmentCount">3</span>
+                    <span class="stats-label">Assessments Completed</span>
+                </div>
+            </div>
+            
+            <div class="profile-section">
+                <h3>Interests & Skills</h3>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="margin-bottom: 1rem; color: #2c3e50;">Add New Interest</h4>
+                    <div class="add-interest-container">
+                        <select id="interestDropdown">
+                            <option value="">Select an interest...</option>
+                            <optgroup label="Technology & Digital">
+                                <option value="Programming">Programming</option>
+                                <option value="Web Development">Web Development</option>
+                                <option value="Data Science">Data Science</option>
+                                <option value="Artificial Intelligence">Artificial Intelligence</option>
+                                <option value="Cybersecurity">Cybersecurity</option>
+                            </optgroup>
+                            <optgroup label="Creative & Media">
+                                <option value="Design">Design</option>
+                                <option value="Photography">Photography</option>
+                                <option value="Art">Art</option>
+                                <option value="Writing">Writing</option>
+                                <option value="Music">Music</option>
+                            </optgroup>
+                            <optgroup label="Business">
+                                <option value="Business">Business</option>
+                                <option value="Marketing">Marketing</option>
+                                <option value="Finance">Finance</option>
+                            </optgroup>
+                            <optgroup label="Personal">
+                                <option value="Sports">Sports</option>
+                                <option value="Travel">Travel</option>
+                                <option value="Cooking">Cooking</option>
+                            </optgroup>
+                        </select>
+                        <button type="button" class="add-btn" onclick="addInterestFromDropdown()">+</button>
+                    </div>
+                </div>
+                
+                <h4 style="margin-bottom: 1rem; color: #2c3e50;">Current Interests</h4>
+                <div id="currentInterests" style="margin-bottom: 2rem;">
+                    <span class="interest-tag" onclick="removeInterest(this, 'Programming')">Programming ×</span>
+                    <span class="interest-tag" onclick="removeInterest(this, 'Data Science')">Data Science ×</span>
+                    <span class="interest-tag" onclick="removeInterest(this, 'Music')">Music ×</span>
+                    <span class="interest-tag" onclick="removeInterest(this, 'Travel')">Travel ×</span>
+                </div>
+                
+                <h4 style="margin-bottom: 1rem; color: #2c3e50;">Suggested Interests</h4>
+                <div id="suggestedInterests" style="margin-bottom: 2rem;">
+                    <span class="suggested-tag" onclick="addSuggestedInterest(this, 'Artificial Intelligence')">+ Artificial Intelligence</span>
+                    <span class="suggested-tag" onclick="addSuggestedInterest(this, 'Cybersecurity')">+ Cybersecurity</span>
+                    <span class="suggested-tag" onclick="addSuggestedInterest(this, 'Digital Marketing')">+ Digital Marketing</span>
+                </div>
+
+                <h4 style="margin-bottom: 1rem; color: #2c3e50;">Career Interest Options</h4>
+                <div id="careerInterests" style="margin-bottom: 2rem;">
+                    <p style="color: #666; font-style: italic; text-align: center; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                        No career interests saved yet. Browse careers on the homepage and click "I am Interested" to add them here!
+                    </p>
+                </div>
+                
+                <h4 style="margin-bottom: 1rem; color: #2c3e50;">Recent Activity</h4>
+                <div>
+                    <div class="activity-item">
+                        <div class="activity-icon">📊</div>
+                        <div class="activity-text">
+                            <h5>Completed Engineering Assessment</h5>
+                            <p>2 days ago</p>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">🤖</div>
+                        <div class="activity-text">
+                            <h5>Chatted with AI Assistant</h5>
+                            <p>1 week ago</p>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">👤</div>
+                        <div class="activity-text">
+                            <h5>Updated Profile Information</h5>
+                            <p>2 weeks ago</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <button class="save-btn" onclick="saveProfile()">Save Changes</button>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <script>
+        let userInterests = ['Programming', 'Data Science', 'Music', 'Travel'];
+        let careerInterests = [];
+
+        function checkAuth() {
+            try {
+                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                if (!isLoggedIn) {
+                    window.location.href = 'login.html';
+                    return false;
+                }
+                
+                const savedUser = localStorage.getItem('currentUser');
+                if (savedUser) {
+                    const currentUser = JSON.parse(savedUser);
+                    document.getElementById('userName').value = currentUser.userId;
+                    document.getElementById('userEmail').value = currentUser.email;
+                    updateAvatarDisplay();
+                }
+
+                const savedInterests = localStorage.getItem('userInterests');
+                if (savedInterests) {
+                    userInterests = JSON.parse(savedInterests);
+                    updateInterestsDisplay();
+                }
+
+                loadCareerInterests();
+                return true;
+            } catch (e) {
+                console.log('localStorage not available');
+                return true;
+            }
+        }
+
+        function loadCareerInterests() {
+            try {
+                const saved = localStorage.getItem('careerInterests');
+                if (saved) {
+                    careerInterests = JSON.parse(saved);
+                    updateCareerInterestsDisplay();
+                }
+            } catch (e) {}
+        }
+
+        function updateCareerInterestsDisplay() {
+            const container = document.getElementById('careerInterests');
+            if (careerInterests.length === 0) {
+                container.innerHTML = `<p style="color: #666; font-style: italic; text-align: center; padding: 1rem; background: #f8f9fa; border-radius: 8px;">No career interests saved yet. Browse careers on the homepage and click "I am Interested" to add them here!</p>`;
+            } else {
+                container.innerHTML = `<div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">${careerInterests.map(career => `<span class="interest-tag" onclick="removeCareerInterest('${career}')">${career} ×</span>`).join('')}</div>`;
+            }
+        }
+
+        function removeCareerInterest(career) {
+            careerInterests = careerInterests.filter(c => c !== career);
+            try {
+                localStorage.setItem('careerInterests', JSON.stringify(careerInterests));
+            } catch (e) {}
+            updateCareerInterestsDisplay();
+        }
+
+        function updateAvatarDisplay() {
+            const name = document.getElementById('userName').value;
+            const email = document.getElementById('userEmail').value;
+            const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+            document.getElementById('avatarCircle').textContent = initials;
+            document.getElementById('displayName').textContent = name;
+            document.getElementById('displayEmail').textContent = email;
+        }
+
+        function addInterestFromDropdown() {
+            const dropdown = document.getElementById('interestDropdown');
+            const value = dropdown.value;
+            if (value && !userInterests.includes(value)) {
+                userInterests.push(value);
+                updateInterestsDisplay();
+                dropdown.value = '';
+            }
+        }
+
+        function addSuggestedInterest(element, interest) {
+            if (!userInterests.includes(interest)) {
+                userInterests.push(interest);
+                updateInterestsDisplay();
+                element.style.display = 'none';
+            }
+        }
+
+        function removeInterest(element, interest) {
+            userInterests = userInterests.filter(i => i !== interest);
+            updateInterestsDisplay();
+        }
+
+        function updateInterestsDisplay() {
+            const container = document.getElementById('currentInterests');
+            container.innerHTML = userInterests.map(interest => 
+                `<span class="interest-tag" onclick="removeInterest(this, '${interest}')">${interest} ×</span>`
+            ).join('');
+        }
+
+        function saveProfile() {
+            updateAvatarDisplay();
+            try {
+                localStorage.setItem('userInterests', JSON.stringify(userInterests));
+                const currentUser = {
+                    id: document.getElementById('userName').value,
+                    name: document.getElementById('userName').value,
+                    email: document.getElementById('userEmail').value
+                };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            } catch (e) {}
+            
+            const successMessage = document.getElementById('successMessage');
+            successMessage.style.display = 'block';
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                try {
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('currentUser');
+                } catch (e) {}
+                window.location.href = 'login.html';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', checkAuth);
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const storedUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!storedUser || !storedUser.username) {
+                alert("Please log in first!");
+                window.location.href = "login.html";
+                return;
+            }
+
+            const username = storedUser.username;
+
+            try {
+                const response = await fetch(`fetch_user.php?username=${encodeURIComponent(username)}`);
+                const data = await response.json();
+                console.log(data);
+
+                if (data.error) {
+                    console.error("Error:", data.error);
+                    alert("Failed to load user data!");
+                } else {
+                    // Example: Display user data
+                    document.getElementById('displayName').textContent = data.name;
+                    document.getElementById('displayEmail').textContent = data.email;
+                    // document.getElementById('displayUsername').textContent = data.username;
+                    // document.getElementById('displayCreatedAt').textContent = data.created_at;
+                }
+            } catch (err) {
+                console.error("Fetch error:", err);
+                alert("Error fetching user data!");
+            }
+        });
+    </script>
+</body>
+</html>
