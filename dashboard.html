@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerGuide - Dashboard</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.6;color:#333;background:#f8f9fa}
+        .container{max-width:1100px;margin:0 auto;padding:0 20px}
+        header{background:white;box-shadow:0 2px 10px rgba(0,0,0,.1);position:sticky;top:0;z-index:100}
+        nav{display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem}
+        .logo{font-size:1.5rem;font-weight:bold;color:#2c3e50;text-decoration:none}
+        .nav-links{display:flex;list-style:none;gap:1.2rem;align-items:center}
+        .nav-links a{text-decoration:none;color:#666;font-weight:500;padding:.5rem 1rem;border-radius:5px;transition:all .3s;display:flex;align-items:center;gap:.4rem;font-size:.93rem}
+        .nav-links a:hover{background:#f0f0f0;color:#333}
+        .nav-links a.active{background:#2c3e50;color:white}
+        .icon{width:17px;height:17px}
+        .hero{background:linear-gradient(135deg,#2c3e50,#667eea);color:white;padding:2.5rem 2rem;margin-bottom:2rem}
+        .hero h1{font-size:1.9rem;margin-bottom:.4rem}
+        .hero p{opacity:.85}
+        .tabs{display:flex;gap:.5rem;background:white;padding:.8rem;border-radius:14px;box-shadow:0 4px 15px rgba(0,0,0,.08);margin-bottom:2rem;flex-wrap:wrap}
+        .tab{padding:.65rem 1.4rem;border-radius:10px;cursor:pointer;font-weight:600;font-size:.93rem;border:none;background:transparent;color:#666;transition:all .2s;display:flex;align-items:center;gap:.4rem}
+        .tab:hover{background:#f0f0f0;color:#333}
+        .tab.active{background:#667eea;color:white;box-shadow:0 3px 10px rgba(102,126,234,.3)}
+        .panel{display:none}
+        .panel.active{display:block}
+        .card{background:white;border-radius:14px;padding:1.8rem;margin-bottom:1.5rem;box-shadow:0 4px 15px rgba(0,0,0,.07)}
+        .card h3{color:#2c3e50;margin-bottom:1rem;font-size:1.15rem;padding-bottom:.6rem;border-bottom:2px solid #f0f0f0;display:flex;align-items:center;gap:.5rem}
+        .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:2rem}
+        .stat{background:white;border-radius:12px;padding:1.3rem;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.07);border-top:4px solid #667eea}
+        .stat.green{border-top-color:#28a745}
+        .stat.orange{border-top-color:#fd7e14}
+        .stat.purple{border-top-color:#764ba2}
+        .stat .num{font-size:2rem;font-weight:700;color:#2c3e50}
+        .stat .lbl{font-size:.82rem;color:#888}
+        /* Results */
+        .result-item{border:1px solid #e9ecef;border-radius:12px;padding:1.3rem;margin-bottom:.9rem;cursor:pointer;transition:all .2s}
+        .result-item:hover{border-color:#667eea;box-shadow:0 4px 12px rgba(102,126,234,.12)}
+        .result-header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap}
+        .result-title{font-weight:700;color:#2c3e50;font-size:1rem}
+        .result-meta{font-size:.82rem;color:#888;margin-top:.2rem}
+        .suit-badge{display:inline-block;padding:.25rem .8rem;border-radius:10px;font-size:.78rem;font-weight:700}
+        .suit-highly{background:#d4edda;color:#155724}
+        .suit-moderately{background:#fff3cd;color:#856404}
+        .suit-not{background:#f8d7da;color:#721c24}
+        .score-bar-wrap{margin-top:.8rem}
+        .score-bar{height:6px;background:#e9ecef;border-radius:3px;overflow:hidden;margin-top:.3rem}
+        .score-fill{height:100%;background:linear-gradient(90deg,#667eea,#764ba2);border-radius:3px}
+        .result-detail{display:none;margin-top:1rem;border-top:1px solid #f0f0f0;padding-top:1rem}
+        .result-detail.open{display:block}
+        .trait-mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.5rem;margin-top:.8rem}
+        .trait-row{display:flex;flex-direction:column;gap:.2rem}
+        .trait-row label{display:flex;justify-content:space-between;font-size:.78rem;color:#666}
+        .trait-bar-sm{height:5px;background:#e9ecef;border-radius:3px;overflow:hidden}
+        /* Exams */
+        .exam-item{border:1px solid #e9ecef;border-radius:12px;padding:1.2rem;margin-bottom:.9rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+        .exam-info h4{color:#2c3e50;font-size:.97rem;margin-bottom:.2rem}
+        .exam-info p{color:#888;font-size:.83rem}
+        .exam-pills{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.4rem}
+        .pill{display:inline-block;padding:.2rem .7rem;border-radius:10px;font-size:.76rem;font-weight:600}
+        .pill-national{background:#e3f0ff;color:#0066cc}
+        .pill-state{background:#e8f5e9;color:#1b5e20}
+        .pill-alert{background:#fff3cd;color:#856404}
+        .pill-soon{background:#f8d7da;color:#721c24;animation:pulse 1.5s infinite}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+        .exam-actions{display:flex;gap:.5rem;align-items:center}
+        /* Interests */
+        .interest-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1rem}
+        .interest-card{background:linear-gradient(135deg,#f8f9ff,white);border:2px solid #e9f0ff;border-radius:12px;padding:1.2rem;position:relative;transition:all .2s}
+        .interest-card:hover{border-color:#667eea;box-shadow:0 4px 12px rgba(102,126,234,.15)}
+        .interest-icon{font-size:1.8rem;margin-bottom:.5rem}
+        .interest-name{font-weight:700;color:#2c3e50;font-size:.97rem}
+        .interest-date{font-size:.78rem;color:#aaa;margin-top:.2rem}
+        .del-btn{position:absolute;top:.7rem;right:.7rem;background:none;border:none;cursor:pointer;color:#ccc;font-size:1rem;transition:color .2s}
+        .del-btn:hover{color:#dc3545}
+        .btn{background:#667eea;color:white;border:none;padding:.7rem 1.4rem;border-radius:9px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;transition:all .3s;font-weight:600;font-size:.88rem}
+        .btn:hover{background:#5a6fc8}
+        .btn-sm{padding:.45rem .9rem;font-size:.8rem}
+        .btn-red{background:#dc3545}.btn-red:hover{background:#c82333}
+        .btn-sec{background:#6c757d}.btn-sec:hover{background:#5a6268}
+        .btn-green{background:#28a745}.btn-green:hover{background:#218838}
+        .empty{text-align:center;padding:3rem;color:#aaa}
+        .empty-icon{font-size:3rem;margin-bottom:.8rem}
+        .loading{text-align:center;padding:2rem;color:#aaa}
+        .not-logged{background:#fff3cd;border:1px solid #ffc107;border-radius:10px;padding:1rem 1.5rem;margin-bottom:1.5rem;font-size:.93rem;color:#856404}
+        .toast{position:fixed;bottom:2rem;right:2rem;background:#2c3e50;color:white;padding:.9rem 1.6rem;border-radius:10px;z-index:9999;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;font-size:.9rem}
+        .toast.show{opacity:1;transform:translateY(0)}
+        .toast.ok{background:#28a745}
+        .toast.err{background:#dc3545}
+        @media(max-width:768px){.nav-links{display:none}.hero{padding:1.5rem}.exam-item{flex-direction:column;align-items:flex-start}}
+    </style>
+</head>
+<body>
+<header>
+    <nav>
+        <a class="logo" href="index.html">🎯 CareerGuide</a>
+        <ul class="nav-links">
+            <li><a href="index.html"><svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>Home</a></li>
+            <li><a href="tests.html"><svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>Tests</a></li>
+            <li><a href="dashboard.html" class="active"><svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zm6-4a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zm6-3a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></svg>Dashboard</a></li>
+            <li><a href="aibot.html"><svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"/></svg>AI Bot</a></li>
+            <li><a href="account.html"><svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>Account</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="hero">
+    <div class="container">
+        <h1>📊 My Career Dashboard</h1>
+        <p id="heroGreet">Your personalised career tracking hub</p>
+    </div>
+</div>
+
+<div class="container" style="padding-bottom:3rem">
+    <div id="notLoggedBanner" class="not-logged" style="display:none">
+        ⚠️ You are not logged in. <a href="login.html" style="color:#667eea;font-weight:600">Log in</a> or <a href="register_form.html" style="color:#667eea;font-weight:600">register</a> to see your saved data here.
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stat-grid">
+        <div class="stat"><div class="num" id="statTests">–</div><div class="lbl">Tests Taken</div></div>
+        <div class="stat green"><div class="num" id="statInterests">–</div><div class="lbl">Career Interests</div></div>
+        <div class="stat orange"><div class="num" id="statExams">–</div><div class="lbl">Saved Exams</div></div>
+        <div class="stat purple"><div class="num" id="statAlerts">–</div><div class="lbl">Upcoming Alerts</div></div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab active" onclick="switchTab('results',this)">📋 Test Results</button>
+        <button class="tab" onclick="switchTab('exams',this)">📝 Saved Exams</button>
+        <button class="tab" onclick="switchTab('interests',this)">❤️ Career Interests</button>
+    </div>
+
+    <!-- Test Results Panel -->
+    <div id="panel-results" class="panel active">
+        <div class="card">
+            <h3>📋 Assessment History</h3>
+            <div id="resultsList"><div class="loading">Loading…</div></div>
+            <div style="margin-top:1rem">
+                <a href="tests.html" class="btn">+ Take New Assessment</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Saved Exams Panel -->
+    <div id="panel-exams" class="panel">
+        <div class="card">
+            <h3>📝 Saved Entrance Exams <span style="font-size:.8rem;color:#888;font-weight:400;margin-left:.5rem">— with date alerts</span></h3>
+            <div id="examsList"><div class="loading">Loading…</div></div>
+            <div style="margin-top:1rem">
+                <a href="tests.html" class="btn">Take Test to Find Exams</a>
+                <a href="index.html" class="btn btn-sec" style="margin-left:.5rem">Browse Careers</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Career Interests Panel -->
+    <div id="panel-interests" class="panel">
+        <div class="card">
+            <h3>❤️ Saved Career Interests</h3>
+            <div class="interest-grid" id="interestGrid"><div class="loading">Loading…</div></div>
+            <div style="margin-top:1rem">
+                <a href="index.html" class="btn">Browse Careers</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+// ── AUTH HELPER ── reads from how login.html saves it
+function getUsername() {
+    try {
+        // Primary: currentUser object set by login.html
+        const cu = localStorage.getItem('currentUser');
+        if (cu) {
+            const obj = JSON.parse(cu);
+            if (obj && obj.username) return obj.username;
+        }
+        // Fallback: plain string key
+        const u = localStorage.getItem('username');
+        if (u) return u;
+    } catch(e) {}
+    return null;
+}
+
+const TRAIT_COLORS = {analytical:"#667eea",creative:"#f093fb",social:"#4facfe",technical:"#28a745",leadership:"#ff6b6b",practical:"#ffc107",empathetic:"#20c997",organized:"#764ba2"};
+const TRAIT_LABELS = {analytical:"Analytical",creative:"Creative",social:"Social",technical:"Technical",leadership:"Leadership",practical:"Practical",empathetic:"Empathetic",organized:"Organised"};
+
+// Approximate exam months for alert calculation
+const EXAM_MONTHS = {
+    "JEE Main":[1,4],"JEE Advanced":[5],"NEET UG":[5],"NEET PG":[1],"GATE":[2],
+    "GATE (CS)":[2],"GATE (ME)":[2],"GATE (Civil)":[2],"GATE (ECE)":[2],"GATE (CS/Statistics)":[2],
+    "CAT":[11],"XAT":[1],"MAT":[2,5,9,12],"GMAT":[1,2,3,4,5,6,7,8,9,10,11,12],
+    "UCEED":[1],"CEED":[1],"NATA":[4],"NID Entrance":[1],
+    "NIFT Entrance":[1],"GPAT":[1],"CA Foundation":[5,11],
+    "CFA Level 1":[2,5,8,11],"CLAT":[5],"AIIMS (via NEET)":[5],"JIPMER":[5]
+};
+
+function daysUntilExam(examName) {
+    const months = EXAM_MONTHS[examName];
+    if(!months) return null;
+    const now = new Date();
+    let nearest = Infinity;
+    months.forEach(m => {
+        let target = new Date(now.getFullYear(), m-1, 15); // mid-month estimate
+        if(target < now) target = new Date(now.getFullYear()+1, m-1, 15);
+        const diff = Math.ceil((target-now)/(1000*60*60*24));
+        if(diff < nearest) nearest = diff;
+    });
+    return nearest === Infinity ? null : nearest;
+}
+
+function toast(msg,type=''){
+    const el=document.getElementById('toast');
+    el.textContent=msg; el.className='toast show '+type;
+    setTimeout(()=>el.className='toast',3000);
+}
+
+function switchTab(id, btn){
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+id).classList.add('active');
+}
+
+// ── LOAD ALL DATA ──
+const username = getUsername();
+
+async function loadAll(){
+    if(!username){
+        document.getElementById('notLoggedBanner').style.display='block';
+        document.getElementById('heroGreet').textContent = 'Please log in to view your dashboard';
+        ['resultsList','examsList'].forEach(id=>{
+            document.getElementById(id).innerHTML='<div class="empty"><div class="empty-icon">🔐</div><p><a href="login.html">Log in</a> to see your saved data</p></div>';
+        });
+        document.getElementById('interestGrid').innerHTML='<div class="empty"><div class="empty-icon">🔐</div><p><a href="login.html">Log in</a> to see your interests</p></div>';
+        ['statTests','statInterests','statExams','statAlerts'].forEach(id=>document.getElementById(id).textContent='–');
+        return;
+    }
+    document.getElementById('heroGreet').textContent = 'Welcome back, '+username+'!';
+
+    const [results, exams, interests] = await Promise.all([
+        fetch('get_results.php?username='+encodeURIComponent(username)).then(r=>r.json()).catch(()=>({results:[]})),
+        fetch('get_exams.php?username='+encodeURIComponent(username)).then(r=>r.json()).catch(()=>({exams:[]})),
+        fetch('get_interests.php?username='+encodeURIComponent(username)).then(r=>r.json()).catch(()=>({interests:[]}))
+    ]);
+
+    const resList = results.results||[];
+    const examList = exams.exams||[];
+    const intList = interests.interests||[];
+
+    // Calc alerts
+    const alertCount = examList.filter(e=>{const d=daysUntilExam(e.exam_name);return d!==null&&d<=90;}).length;
+
+    document.getElementById('statTests').textContent = resList.length;
+    document.getElementById('statInterests').textContent = intList.length;
+    document.getElementById('statExams').textContent = examList.length;
+    document.getElementById('statAlerts').textContent = alertCount;
+
+    renderResults(resList);
+    renderExams(examList);
+    renderInterests(intList);
+}
+
+function renderResults(list){
+    const el = document.getElementById('resultsList');
+    if(!list.length){
+        el.innerHTML='<div class="empty"><div class="empty-icon">📋</div><p>No assessments taken yet.</p><br><a href="tests.html" class="btn">Take Your First Assessment</a></div>';
+        return;
+    }
+    el.innerHTML = list.map((r,i) => {
+        const suitClass = 'suit-'+r.suitability;
+        const suitText = {highly:'✅ Highly Suitable',moderately:'⚡ Moderately Suitable',not:'ℹ️ Exploring'}[r.suitability]||'–';
+        const date = new Date(r.taken_at).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+        let traits = {};
+        try{ if(r.result_json){ const rd=JSON.parse(r.result_json); traits=rd.traits||{}; } }catch(e){}
+        const traitHtml = Object.entries(traits).slice(0,6).map(([t,v])=>`
+            <div class="trait-row">
+                <label><span>${TRAIT_LABELS[t]||t}</span><span>${v}/100</span></label>
+                <div class="trait-bar-sm"><div style="height:100%;width:${v}%;background:${TRAIT_COLORS[t]||'#667eea'};border-radius:3px"></div></div>
+            </div>`).join('');
+        return `<div class="result-item" onclick="toggleDetail('rd${i}')">
+            <div class="result-header">
+                <div>
+                    <div class="result-title">${r.category||'–'} — ${r.subcategory||'–'}</div>
+                    <div class="result-meta">🏆 Top Match: <strong>${r.top_career||'–'}</strong> &nbsp;|&nbsp; ${date}</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.3rem">
+                    <span class="suit-badge ${suitClass}">${suitText}</span>
+                    <span style="font-size:.82rem;color:#888">Score: <strong>${r.score||0}/100</strong></span>
+                </div>
+            </div>
+            <div class="score-bar-wrap">
+                <div class="score-bar"><div class="score-fill" style="width:${r.score||0}%"></div></div>
+            </div>
+            <div class="result-detail" id="rd${i}">
+                ${traitHtml ? '<div class="trait-mini">'+traitHtml+'</div>' : ''}
+                <div style="display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap">
+                    <button class="btn btn-sm" onclick="event.stopPropagation();viewResult('${encodeURIComponent(JSON.stringify(r))}')">👁 View Full</button>
+                    <button class="btn btn-sm btn-red" onclick="event.stopPropagation();deleteResult(${r.id},this)">🗑 Delete</button>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function toggleDetail(id){
+    const el=document.getElementById(id);
+    el.classList.toggle('open');
+}
+
+function viewResult(encoded){
+    try{
+        const r = JSON.parse(decodeURIComponent(encoded));
+        let rd = {};
+        try{ rd=JSON.parse(r.result_json)||{}; }catch(e){}
+        const payload = { category:r.category, subcategory:r.subcategory, suitability:r.suitability,
+            score:r.score, top_career:r.top_career, traits:rd.traits||{}, careers:rd.careers||[], taken_at:r.taken_at, savedId:r.id };
+        sessionStorage.setItem('latestResult', JSON.stringify(payload));
+        window.location.href='results.html';
+    }catch(e){ toast('Could not open result','err'); }
+}
+
+async function deleteResult(id, btn){
+    if(!confirm('Delete this result?')) return;
+    btn.disabled=true;
+    try{
+        const r=await fetch('delete_result.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,username})});
+        const d=await r.json();
+        if(d.success){ toast('Result deleted','ok'); loadAll(); }
+        else{ toast('Error: '+d.error,'err'); btn.disabled=false; }
+    }catch(e){ toast('Network error','err'); btn.disabled=false; }
+}
+
+function renderExams(list){
+    const el=document.getElementById('examsList');
+    if(!list.length){
+        el.innerHTML='<div class="empty"><div class="empty-icon">📝</div><p>No exams saved yet.</p><br><p style="font-size:.88rem;color:#aaa;margin-top:.5rem">Take a test or browse careers to find relevant entrance exams.</p></div>';
+        return;
+    }
+    el.innerHTML = list.map(e => {
+        const days = daysUntilExam(e.exam_name);
+        let alertPill = '';
+        if(days!==null){
+            if(days<=30) alertPill=`<span class="pill pill-soon">🔔 In ~${days} days</span>`;
+            else if(days<=90) alertPill=`<span class="pill pill-alert">⏰ In ~${days} days</span>`;
+            else alertPill=`<span class="pill" style="background:#e9ecef;color:#666">📅 ~${days} days away</span>`;
+        }
+        const lvlClass = (e.exam_level||'').toLowerCase()==='national'?'pill-national':'';
+        const saved = new Date(e.saved_at).toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+        return `<div class="exam-item">
+            <div class="exam-info">
+                <h4>${e.exam_name}</h4>
+                <p>For: <strong>${e.career_name}</strong> &nbsp;|&nbsp; ${e.eligibility||'–'} &nbsp;|&nbsp; Saved ${saved}</p>
+                <div class="exam-pills">
+                    ${e.exam_level?`<span class="pill ${lvlClass}">${e.exam_level}</span>`:''}
+                    ${alertPill}
+                </div>
+            </div>
+            <div class="exam-actions">
+                <button class="btn btn-sm btn-red" onclick="deleteExam(${e.id},this)">🗑</button>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+async function deleteExam(id, btn){
+    if(!confirm('Remove this exam from your tracker?')) return;
+    btn.disabled=true;
+    try{
+        const r=await fetch('delete_exam.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,username})});
+        const d=await r.json();
+        if(d.success){ toast('Exam removed','ok'); loadAll(); }
+        else{ toast('Error','err'); btn.disabled=false; }
+    }catch(e){ toast('Network error','err'); btn.disabled=false; }
+}
+
+const CAREER_ICONS = {
+    "Software Engineer":"💻","Data Scientist":"📊","Cloud Architect":"☁️","Mechanical Engineer":"⚙️","Civil Engineer":"🏗️",
+    "Embedded Systems Engineer":"🔌","Environmental Engineer":"🌿","Engineering Manager":"🧑‍💼",
+    "General Physician (MBBS)":"👨‍⚕️","Surgeon":"🔬","Psychiatrist":"🧠","Medical Researcher":"🧪",
+    "Nurse Practitioner":"🩺","Pharmacist":"💊","Public Health Officer":"🌍","Physical Therapist":"🏃",
+    "Management Consultant":"📋","Investment Banker":"💹","Marketing Manager":"📣","Entrepreneur":"🚀",
+    "HR Manager":"🤝","Finance Manager":"💰","Operations Manager":"⚙️","Business Analyst":"📈",
+    "UX/UI Designer":"🎨","Graphic Designer":"✏️","Art Director":"🖼️","Film/Video Director":"🎬",
+    "Content Creator":"📹","Copywriter":"✍️","Musician/Music Producer":"🎵","Fashion Designer":"👗"
+};
+
+function renderInterests(list){
+    const el=document.getElementById('interestGrid');
+    if(!list.length){
+        el.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-icon">❤️</div><p>No career interests saved.</p><br><p style="font-size:.88rem;color:#aaa;margin-top:.5rem">Click "I am Interested" on any career card or take a test.</p></div>';
+        return;
+    }
+    el.innerHTML = list.map(i => {
+        const icon = CAREER_ICONS[i.career_name]||'🎯';
+        const date = new Date(i.saved_at).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+        return `<div class="interest-card">
+            <button class="del-btn" onclick="deleteInterest(${i.id},'${encodeURIComponent(i.career_name)}',this)" title="Remove">✕</button>
+            <div class="interest-icon">${icon}</div>
+            <div class="interest-name">${i.career_name}</div>
+            <div class="interest-date">Saved ${date}</div>
+        </div>`;
+    }).join('');
+}
+
+async function deleteInterest(id, encodedName, btn){
+    const name = decodeURIComponent(encodedName);
+    if(!confirm('Remove '+name+' from interests?')) return;
+    btn.disabled=true;
+    try{
+        const r=await fetch('save_interest.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,career_name:name,action:'delete'})});
+        const d=await r.json();
+        if(d.success){ toast('Removed from interests','ok'); loadAll(); }
+        else{ toast('Error','err'); btn.disabled=false; }
+    }catch(e){ toast('Network error','err'); btn.disabled=false; }
+}
+
+document.addEventListener('DOMContentLoaded', loadAll);
+</script>
+</body>
+</html>

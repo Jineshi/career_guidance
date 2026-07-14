@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerGuide - Career Assessment</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.6;color:#333;background:#f8f9fa}
+        .container{max-width:1100px;margin:0 auto;padding:0 20px}
+        header{background:white;box-shadow:0 2px 10px rgba(0,0,0,.1);position:sticky;top:0;z-index:100}
+        nav{display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem}
+        .logo{font-size:1.5rem;font-weight:bold;color:#2c3e50;text-decoration:none}
+        .nav-links{display:flex;list-style:none;gap:1.2rem;align-items:center}
+        .nav-links a{text-decoration:none;color:#666;font-weight:500;padding:.5rem 1rem;border-radius:5px;transition:all .3s;display:flex;align-items:center;gap:.4rem;font-size:.93rem}
+        .nav-links a:hover{background:#f0f0f0;color:#333}
+        .nav-links a.active{background:#2c3e50;color:white}
+        .icon{width:17px;height:17px}
+        .page{display:none;min-height:calc(100vh - 70px);padding:2rem 0}
+        .page.active{display:block}
+        .card{background:white;padding:2.5rem;border-radius:20px;box-shadow:0 8px 25px rgba(0,0,0,.1);max-width:900px;margin:0 auto}
+        .cat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.8rem}
+        .cat-card{background:white;border-radius:15px;padding:2rem;box-shadow:0 6px 20px rgba(0,0,0,.1);cursor:pointer;text-align:center;border:2px solid transparent;transition:all .3s}
+        .cat-card:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,.15);border-color:#667eea}
+        .cat-icon{height:110px;border-radius:12px;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;font-size:3rem}
+        .cat-card h3{color:#2c3e50;margin-bottom:.5rem;font-size:1.2rem}
+        .cat-card p{color:#888;font-size:.9rem}
+        .sub-opt{background:white;border:2px solid #e9ecef;border-radius:12px;padding:1.3rem 1.8rem;cursor:pointer;transition:all .3s}
+        .sub-opt:hover{border-color:#667eea;background:#f8f9ff;transform:translateY(-2px)}
+        .sub-opt h4{color:#2c3e50;margin-bottom:.2rem}
+        .sub-opt p{color:#999;font-size:.85rem}
+        .prog-wrap{margin-bottom:2rem}
+        .prog-label{display:flex;justify-content:space-between;font-size:.85rem;color:#888;margin-bottom:.4rem}
+        .prog-bar{width:100%;height:8px;background:#e9ecef;border-radius:4px;overflow:hidden}
+        .prog-fill{height:100%;background:linear-gradient(90deg,#667eea,#764ba2);transition:width .4s ease}
+        .q-text{font-size:1.2rem;font-weight:600;color:#2c3e50;margin:1.5rem 0;line-height:1.5}
+        .opts{display:flex;flex-direction:column;gap:.8rem}
+        .opt{padding:1rem 1.4rem;border:2px solid #e9ecef;border-radius:12px;cursor:pointer;transition:all .3s;background:white;text-align:left;font-size:.98rem}
+        .opt:hover{border-color:#667eea;background:#f8f9ff;transform:translateX(4px)}
+        .opt.selected{border-color:#667eea;background:#667eea;color:white;transform:translateX(4px)}
+        .quiz-nav{display:flex;justify-content:space-between;margin-top:2rem;gap:1rem}
+        .btn{background:#667eea;color:white;border:none;padding:.85rem 1.8rem;border-radius:10px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;transition:all .3s;font-weight:600;font-size:.97rem}
+        .btn:hover{background:#5a6fc8;transform:translateY(-2px)}
+        .btn:disabled{background:#adb5bd;cursor:not-allowed;transform:none}
+        .btn-sec{background:#6c757d}.btn-sec:hover{background:#5a6268}
+        .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:9999}
+        .overlay-box{background:white;padding:3rem;border-radius:20px;text-align:center;max-width:380px;width:90%}
+        .spinner{width:48px;height:48px;border:5px solid #e9ecef;border-top-color:#667eea;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1.5rem}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        @media(max-width:768px){.nav-links{display:none}.card{padding:1.5rem}}
+    </style>
+</head>
+<body>
+<header>
+    <nav>
+        <a class="logo" href="index.html">🎯 CareerGuide</a>
+        <ul class="nav-links">
+            <li><a href="index.html"><svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>Home</a></li>
+            <li><a href="tests.html" class="active"><svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>Tests</a></li>
+            <li><a href="dashboard.html"><svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zm6-4a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zm6-3a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></svg>Dashboard</a></li>
+            <li><a href="aibot.html"><svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"/></svg>AI Bot</a></li>
+            <li><a href="account.html"><svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>Account</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Categories -->
+<div id="pg-cat" class="page active">
+    <div class="container">
+        <div class="card">
+            <h2 style="text-align:center;color:#2c3e50;font-size:2rem;margin-bottom:.5rem">Career Assessment</h2>
+            <p style="text-align:center;color:#888;margin-bottom:2rem">Pick a category → choose specialisation → answer 20 questions → get your personalised results</p>
+            <div style="max-width:460px;margin:0 auto 2rem;position:relative">
+                <input id="catSearch" type="text" placeholder="Search categories…" oninput="filterCats()"
+                    style="width:100%;padding:.85rem 1rem .85rem 3rem;border:2px solid #e9ecef;border-radius:25px;font-size:.97rem">
+                <svg style="position:absolute;left:1rem;top:50%;transform:translateY(-50%);width:17px;height:17px;color:#aaa" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/></svg>
+            </div>
+            <div class="cat-grid" id="catGrid"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Subcategories -->
+<div id="pg-sub" class="page">
+    <div class="container">
+        <div class="card">
+            <button class="btn btn-sec" onclick="showPage('pg-cat')">← Back</button>
+            <h2 id="sub-title" style="text-align:center;color:#2c3e50;font-size:1.8rem;margin:1.5rem 0 .5rem"></h2>
+            <p style="text-align:center;color:#888;margin-bottom:2rem">Select a specialisation for a targeted 20-question assessment</p>
+            <div id="sub-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Quiz -->
+<div id="pg-quiz" class="page">
+    <div class="container">
+        <div class="card">
+            <button class="btn btn-sec" onclick="showPage('pg-sub')">← Back</button>
+            <h2 id="quiz-title" style="text-align:center;color:#2c3e50;font-size:1.7rem;margin:1.5rem 0 .3rem"></h2>
+            <p id="quiz-sub" style="text-align:center;color:#888;margin-bottom:1.5rem"></p>
+            <div class="prog-wrap">
+                <div class="prog-label"><span>Question <span id="qNum">1</span> of <span id="qTotal">20</span></span><span id="qPct">5%</span></div>
+                <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:5%"></div></div>
+            </div>
+            <p class="q-text" id="qText">Loading…</p>
+            <div class="opts" id="opts"></div>
+            <div class="quiz-nav">
+                <button class="btn btn-sec" id="prevBtn" onclick="prevQ()" style="display:none">← Previous</button>
+                <button class="btn" id="nextBtn" onclick="nextQ()" disabled>Next →</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loadingOverlay" class="overlay" style="display:none">
+    <div class="overlay-box">
+        <div class="spinner"></div>
+        <h3 style="color:#2c3e50;margin-bottom:.5rem">Analysing Your Answers…</h3>
+        <p style="color:#888">Generating your personalised career results</p>
+    </div>
+</div>
+
+<script>
+// ── AUTH HELPER ── reads from how login.html saves it
+function getUsername() {
+    try {
+        // Primary: currentUser object set by login.html
+        const cu = localStorage.getItem('currentUser');
+        if (cu) {
+            const obj = JSON.parse(cu);
+            if (obj && obj.username) return obj.username;
+        }
+        // Fallback: plain string key
+        const u = localStorage.getItem('username');
+        if (u) return u;
+    } catch(e) {}
+    return null;
+}
+
+// ════════════════════════════════════════════════════════════
+// TRAIT-BASED SCORING ENGINE
+// Traits: analytical, creative, social, technical, leadership, practical, empathetic, organized
+// Each answer maps to a trait delta. Scores normalised 0-100.
+// Career profiles define minimum trait thresholds for match %.
+// ════════════════════════════════════════════════════════════
+const TRAITS = ['analytical','creative','social','technical','leadership','practical','empathetic','organized'];
+
+const QUESTION_BANKS = {
+    engineering:[
+        {q:"How do you feel about solving complex mathematical problems?",opts:["Love it – it's my favourite activity","I enjoy it most of the time","Can do it but don't love it","Prefer to avoid heavy maths"],traits:[{analytical:4,technical:3},{analytical:3,technical:2},{analytical:1,practical:1},{creative:2,social:1}]},
+        {q:"When a system breaks, what is your first instinct?",opts:["Systematically isolate each component","Search documentation and error logs","Ask a colleague for help","Try things until something works"],traits:[{analytical:4,technical:3},{analytical:3,technical:2},{social:3},{practical:2,creative:1}]},
+        {q:"How do you prefer to design solutions?",opts:["Start with detailed blueprints and specs","Sketch rough ideas then iterate","Jump straight to prototyping","Follow established templates"],traits:[{analytical:3,organized:4},{creative:3,technical:2},{technical:3,practical:3},{practical:3,organized:2}]},
+        {q:"Which technology area excites you most?",opts:["Embedded systems and hardware","Cloud architecture and scalability","AI/ML and data pipelines","User-facing web and mobile apps"],traits:[{technical:4,practical:3},{technical:3,analytical:3},{analytical:4,technical:3},{creative:2,technical:2}]},
+        {q:"How important is physical construction in your ideal job?",opts:["Very – I want to build tangible things","Somewhat – a mix of physical and digital","Not very – I prefer pure software","Not at all – I prefer abstract systems"],traits:[{practical:4,technical:3},{practical:2,technical:2},{technical:4},{analytical:4,technical:2}]},
+        {q:"How do you handle ambiguous requirements?",opts:["Define them rigorously before starting","Research similar past solutions","Clarify immediately with stakeholders","Start building and adjust as needed"],traits:[{analytical:4,organized:3},{analytical:3,technical:2},{social:3,organized:2},{practical:3,creative:2}]},
+        {q:"What role do you prefer in a project?",opts:["Architect – design the overall structure","Developer – implement the core logic","QA – ensure quality and correctness","Manager – coordinate the team"],traits:[{analytical:3,leadership:2},{technical:4,analytical:2},{analytical:3,organized:4},{leadership:4,organized:3}]},
+        {q:"How comfortable are you reading circuit diagrams or CAD?",opts:["Very comfortable – it's second nature","Comfortable with practice","Can learn if required","Not comfortable with technical diagrams"],traits:[{technical:4,analytical:3},{technical:3,analytical:2},{technical:2,practical:2},{creative:2,social:2}]},
+        {q:"What motivates you to solve a hard engineering problem?",opts:["The intellectual challenge itself","Seeing the physical result work","The positive impact on users","Recognition from the team"],traits:[{analytical:4},{practical:4,technical:3},{empathetic:3,social:3},{leadership:3,social:2}]},
+        {q:"How do you stay updated with new technologies?",opts:["Deep dive into academic papers","Follow industry blogs and podcasts","Attend conferences and meetups","Learn only what current projects require"],traits:[{analytical:4},{technical:3,practical:2},{social:3,leadership:2},{practical:3}]},
+        {q:"How do you feel about code or design documentation?",opts:["Document extensively – clarity matters","Document key parts thoroughly","Complete minimum required","Prefer self-documenting approaches"],traits:[{organized:4,analytical:3},{organized:3,analytical:2},{practical:2},{technical:3,analytical:2}]},
+        {q:"How do you respond to code or design review feedback?",opts:["Actively seek it – I learn from it","Accept it positively","Tolerate it but prefer independence","Prefer to work independently always"],traits:[{social:3,organized:2},{social:2,analytical:2},{technical:3},{technical:2,analytical:3}]},
+        {q:"Which environment suits you best for engineering work?",opts:["Research lab with long-term projects","Fast-paced startup","Large company with clear structures","Remote freelance independence"],traits:[{analytical:4,technical:3},{technical:3,practical:3},{organized:3,leadership:2},{practical:4,technical:2}]},
+        {q:"How important is environmental sustainability to your work?",opts:["Extremely – it is a core motivation","Very important consideration","Somewhat important","Not a primary factor for me"],traits:[{empathetic:4,analytical:3},{empathetic:3,analytical:2},{empathetic:2,practical:2},{technical:3,practical:3}]},
+        {q:"How do you prefer to learn a new technical skill?",opts:["Build a project that requires it","Read official documentation first","Take a structured course","Watch video tutorials"],traits:[{practical:4,technical:3},{analytical:4,technical:3},{organized:3,analytical:2},{technical:2,practical:2}]},
+        {q:"How do you balance innovation vs reliability in systems?",opts:["Push for innovation even if risky","Innovate where safe, reliable elsewhere","Prioritise reliability always","Follow whatever the client wants"],traits:[{creative:4,technical:3},{creative:2,technical:3},{technical:3,organized:3},{practical:3,social:2}]},
+        {q:"How often do you enjoy working with data and numbers?",opts:["Daily – it's core to my thinking","Often – a key part of my work","Occasionally – when needed","Rarely – I prefer qualitative thinking"],traits:[{analytical:4,technical:3},{analytical:3,technical:2},{analytical:2},{creative:3,social:2}]},
+        {q:"How do you handle project scope changes mid-way?",opts:["Analyse full impact before agreeing","Adapt quickly and re-plan","Get frustrated but comply","Welcome change as new challenge"],traits:[{analytical:3,organized:3},{practical:3,organized:2},{organized:1,practical:2},{creative:3,practical:2}]},
+        {q:"How do you approach optimisation and performance tuning?",opts:["Profile systematically with tools","Benchmark before and after changes","Optimise by intuition and experience","Focus on correctness first, performance later"],traits:[{analytical:4,technical:4},{analytical:3,technical:3},{practical:3,technical:2},{organized:3,practical:3}]},
+        {q:"What is your long-term engineering career vision?",opts:["Become a deep technical expert","Build and launch a product/company","Lead large engineering teams","Consult across many industries"],traits:[{analytical:4,technical:4},{practical:4,technical:3},{leadership:4,organized:3},{analytical:3,leadership:3}]}
+    ],
+    medical:[
+        {q:"How do you react when someone near you is in physical pain?",opts:["Stay calm and take immediate action","Feel strong empathy and try to help","Feel anxious but push through","Feel overwhelmed by the situation"],traits:[{practical:4,empathetic:3},{empathetic:4,social:3},{empathetic:3,practical:2},{empathetic:2}]},
+        {q:"How comfortable are you with detailed biological science?",opts:["Very comfortable – I love anatomy/physiology","Comfortable – it is interesting","Can manage with effort","Not my strongest subject"],traits:[{analytical:4,technical:3},{analytical:3,technical:2},{analytical:2,practical:2},{creative:2,social:2}]},
+        {q:"How important is direct patient contact to you?",opts:["Essential – it is why I chose healthcare","Important but not the only factor","I prefer some contact","I prefer lab or research settings"],traits:[{social:4,empathetic:4},{social:3,empathetic:3},{social:2,empathetic:2},{analytical:4,technical:3}]},
+        {q:"How do you handle high-stress emergency situations?",opts:["I thrive under pressure","Stay focused thanks to training","Get nervous but manage","Prefer to avoid emergencies"],traits:[{practical:4,leadership:3},{practical:3,organized:3},{organized:2,practical:2},{analytical:3,technical:3}]},
+        {q:"How do you feel about long hours and irregular shifts?",opts:["Acceptable – patient care comes first","Manageable for the right role","Would strongly prefer regular hours","Very strong preference for fixed schedule"],traits:[{empathetic:4,practical:3},{practical:3,organized:2},{organized:3,practical:2},{analytical:3,technical:2}]},
+        {q:"How important is research and discovery in medicine to you?",opts:["Very – I want to advance medical knowledge","Important alongside clinical work","Interesting but not a priority","Strongly prefer direct clinical practice"],traits:[{analytical:4,technical:3},{analytical:3,empathetic:2},{analytical:2,practical:2},{empathetic:4,social:3}]},
+        {q:"How do you communicate complex health info to patients?",opts:["Break it down clearly and patiently","Use visuals and analogies","Provide written take-home materials","Keep it concise and direct"],traits:[{social:4,empathetic:4},{creative:3,empathetic:3},{organized:3,analytical:2},{practical:3,organized:2}]},
+        {q:"How do you approach administering medication/procedures?",opts:["Confident and well-prepared","Careful and methodical always","Nervous but committed","Prefer to leave it to specialists"],traits:[{practical:4,organized:3},{practical:3,analytical:3},{practical:2,empathetic:2},{analytical:3,technical:3}]},
+        {q:"Which medical area interests you most?",opts:["Surgery and acute care","Preventive care and public health","Mental health and counselling","Pharmaceutical research and development"],traits:[{practical:4,technical:3,leadership:2},{analytical:3,empathetic:3,social:3},{empathetic:4,social:4,analytical:2},{analytical:4,technical:4}]},
+        {q:"How do you maintain emotional resilience after difficult cases?",opts:["Strong personal coping strategies","Professional support and debriefs","Self-care routine and reflection","I find it very challenging"],traits:[{practical:3,organized:3},{social:3,empathetic:3},{empathetic:3,practical:2},{empathetic:2}]},
+        {q:"How much do you value teamwork in healthcare settings?",opts:["Essential – good outcomes need great teams","Very important for patient safety","Important but I can also work alone","Prefer to work independently"],traits:[{social:4,leadership:3},{social:3,leadership:2},{social:2,practical:2},{analytical:3,technical:3}]},
+        {q:"How do you approach a patient's holistic wellbeing?",opts:["Address physical, mental and social factors","Focus primarily on the medical issue","Refer to relevant specialists","Document thoroughly and follow protocols"],traits:[{empathetic:4,social:4},{practical:3,technical:3},{social:3,analytical:2},{organized:4,analytical:3}]},
+        {q:"How do you keep up with medical advances?",opts:["Read journals and attend grand rounds","Follow medical news and key papers","Learn during mandated CPD","Learn when directly relevant to cases"],traits:[{analytical:4,technical:3},{analytical:3,technical:2},{organized:2,practical:2},{practical:3}]},
+        {q:"How do you handle delivering difficult news to patients?",opts:["With empathy, clarity and presence","Professionally and factually","With support resources ready","I find this very difficult"],traits:[{empathetic:4,social:4},{practical:3,organized:3},{social:3,empathetic:3},{empathetic:2}]},
+        {q:"How do you approach medical documentation?",opts:["Thorough and meticulous always","Detailed for significant cases","Complete the minimum required","Prefer verbal communication"],traits:[{organized:4,analytical:3},{organized:3,analytical:2},{practical:2},{social:3}]},
+        {q:"How comfortable are you with healthcare technology?",opts:["Very – I actively embrace health tech","Comfortable with the key tools","Adapt when required by the role","Prefer traditional clinical methods"],traits:[{technical:4,analytical:3},{technical:3,practical:2},{practical:3},{empathetic:3,practical:3}]},
+        {q:"How do you feel about deep specialisation vs generalism?",opts:["Deep expertise in one clinical area","Strong lean toward specialising","General medicine first, decide later","Generalist – breadth over depth"],traits:[{analytical:4,technical:4},{technical:3,analytical:3},{practical:2,organized:2},{social:3,empathetic:3}]},
+        {q:"How do you handle disagreements over a treatment plan?",opts:["Present evidence and advocate clearly","Discuss openly with colleagues","Defer to the senior clinician","Avoid conflict and comply"],traits:[{analytical:3,leadership:3},{social:3,analytical:2},{social:2,practical:2},{social:1,practical:1}]},
+        {q:"How do you prioritise amongst multiple unwell patients?",opts:["Clinical triage protocols systematically","Intuitive assessment of severity","Ask a senior to decide","Address each case sequentially"],traits:[{organized:4,analytical:4,practical:3},{practical:3,empathetic:3},{social:2,leadership:2},{organized:2,practical:2}]},
+        {q:"What drives your commitment to healthcare as a career?",opts:["Scientific fascination with the body","Making a real difference to individuals","Advancing human health globally","Job stability and societal respect"],traits:[{analytical:4,technical:3},{empathetic:4,social:4},{analytical:3,empathetic:3},{practical:3,organized:2}]}
+    ],
+    business:[
+        {q:"How do you feel about leading teams and making key decisions?",opts:["Natural – I gravitate toward leadership","Comfortable in the right context","Prefer supporting a strong leader","Prefer individual contributor roles"],traits:[{leadership:4,social:3},{leadership:3,social:2},{social:3,organized:2},{analytical:3,practical:2}]},
+        {q:"How do you approach financial analysis and modelling?",opts:["Love crunching numbers and building models","Find it useful and manageable","Can do it but prefer other work","Prefer qualitative business thinking"],traits:[{analytical:4,technical:3},{analytical:3,practical:2},{practical:3,analytical:1},{creative:3,social:2}]},
+        {q:"How important is entrepreneurship to your career goals?",opts:["I want to build my own company","Would consider it with the right idea","Interesting but prefer stability","Strong preference for employment"],traits:[{leadership:4,creative:4,practical:3},{leadership:3,creative:3},{practical:3,organized:2},{organized:3,analytical:2}]},
+        {q:"How do you handle negotiation and persuasion?",opts:["Thrive – I enjoy negotiating deals","Comfortable with thorough preparation","Nervous but can manage","Prefer to avoid negotiation"],traits:[{leadership:4,social:4},{leadership:3,social:3},{social:2,practical:2},{analytical:3,organized:3}]},
+        {q:"How do you approach market research?",opts:["Deep dive into data and trends","Survey customers and stakeholders","Review competitors and benchmarks","Use gut feeling and experience"],traits:[{analytical:4,technical:3},{social:3,empathetic:3},{analytical:3,practical:2},{practical:3,creative:2}]},
+        {q:"Which business function excites you most?",opts:["Strategy and corporate development","Marketing and brand building","Finance and investment management","Operations and process efficiency"],traits:[{analytical:4,leadership:4},{creative:4,social:3},{analytical:4,technical:3},{practical:4,organized:4}]},
+        {q:"How do you feel about presenting to senior stakeholders?",opts:["Enjoy it – confident communicator","Comfortable with preparation","Nervous but capable","Strongly prefer written communication"],traits:[{leadership:4,social:4},{leadership:3,social:3},{social:2,organized:2},{analytical:3,organized:3}]},
+        {q:"How do you manage competing priorities under pressure?",opts:["Systematic prioritisation frameworks","Balance urgency and importance intuitively","Tackle the most urgent first","Ask leadership to prioritise for me"],traits:[{organized:4,analytical:3},{organized:3,practical:3},{practical:3,leadership:2},{social:3,leadership:2}]},
+        {q:"How important is social impact alongside business goals?",opts:["Central – business should drive good","Very important alongside profit","One consideration among many","Profit and growth are primary goals"],traits:[{empathetic:4,social:4,leadership:3},{empathetic:3,social:3,analytical:2},{empathetic:2,practical:2},{analytical:3,practical:4}]},
+        {q:"How do you build relationships with clients and partners?",opts:["Nurture long-term relationships proactively","Maintain professional consistent contact","Connect when there is clear mutual value","Prefer transactional interactions"],traits:[{social:4,empathetic:3},{social:3,organized:2},{practical:3,social:2},{analytical:3,technical:2}]},
+        {q:"How comfortable are you with financial risk?",opts:["High risk tolerance for high potential reward","Calculated risk with thorough analysis","Low risk – prefer predictable returns","Avoid risk wherever possible"],traits:[{leadership:4,practical:3},{analytical:4,leadership:3},{analytical:3,organized:3},{organized:4,analytical:2}]},
+        {q:"How do you use data in business decision making?",opts:["Data-driven always – evidence first","Data-informed alongside judgment","Use data when readily available","Rely primarily on experience and intuition"],traits:[{analytical:4,technical:3},{analytical:3,practical:2},{practical:3},{practical:3,social:2}]},
+        {q:"How do you feel about digital transformation initiatives?",opts:["Champion them – technology drives value","Embrace them strategically","Adapt when necessary for the business","Prefer proven traditional methods"],traits:[{technical:4,leadership:3},{analytical:3,leadership:3},{practical:3,organized:2},{practical:3,organized:3}]},
+        {q:"What is your preferred management style when leading others?",opts:["Coaching and empowering the team","Setting clear goals and accountability","Collaborative consensus building","Hands-on and direct oversight"],traits:[{leadership:4,empathetic:4},{leadership:3,organized:4},{social:4,leadership:3},{practical:4,leadership:3}]},
+        {q:"How do you respond to business failures or major setbacks?",opts:["Analyse, learn and iterate quickly","Regroup the team and rebuild the plan","Feel discouraged but eventually recover","Struggle to move forward effectively"],traits:[{analytical:4,leadership:3},{leadership:4,social:3},{practical:2,organized:2},{organized:1}]},
+        {q:"How important is professional networking to you?",opts:["Critical – I actively build my network","Important and I invest time in it","Useful but not a high priority","I find networking genuinely uncomfortable"],traits:[{social:4,leadership:3},{social:3,leadership:2},{social:2,practical:2},{analytical:3,technical:2}]},
+        {q:"How do you balance short-term results with long-term strategy?",opts:["Always think long-term strategy first","Balance both based on context","Focus on immediate deliverables","Let leadership set the strategic direction"],traits:[{leadership:4,analytical:4},{analytical:3,leadership:3},{practical:4,organized:3},{social:2,organized:2}]},
+        {q:"How do you handle tight budgets and resource constraints?",opts:["Innovate to achieve more with less","Prioritise ruthlessly to stay lean","Negotiate aggressively for more resources","Escalate constraints to leadership"],traits:[{creative:3,analytical:3},{analytical:4,practical:3},{social:3,leadership:3},{leadership:3,social:2}]},
+        {q:"How important is ethical conduct in business to you?",opts:["Non-negotiable in every decision","Very important in all key decisions","Important when scrutinised publicly","Flexible based on business needs"],traits:[{empathetic:4,leadership:4,organized:3},{empathetic:3,analytical:3},{empathetic:2,practical:2},{practical:3,analytical:2}]},
+        {q:"What is your long-term business career vision?",opts:["C-suite executive or board director","Founder of a successful company","Deep domain expert and trusted advisor","Build a stable fulfilling career"],traits:[{leadership:4,analytical:3},{leadership:4,creative:4,practical:3},{analytical:4,technical:3},{organized:3,practical:3}]}
+    ],
+    creative:[
+        {q:"How do you generate your best creative ideas?",opts:["Through research and cultural exploration","Observing everyday life and people","Experimentation and playful exploration","Responding to briefs and constraints"],traits:[{creative:4,analytical:3},{creative:4,empathetic:3},{creative:4,technical:3},{creative:3,practical:3}]},
+        {q:"How important is aesthetic quality and detail to your work?",opts:["Paramount – beauty and craft matter deeply","Very important in everything I produce","Important but function comes first","Less important than clear communication"],traits:[{creative:4,technical:3},{creative:3,technical:2},{practical:3,technical:2},{analytical:3,practical:2}]},
+        {q:"How do you handle critical feedback on your creative work?",opts:["Welcome it – it always sharpens the work","Use it constructively to improve","Take time to process then act on it","Find it difficult and discouraging"],traits:[{creative:3,analytical:3},{creative:3,practical:3},{creative:2,empathetic:2},{empathetic:2,practical:1}]},
+        {q:"Which creative medium excites you most?",opts:["Visual design and illustration","Photography, film and video","Writing and storytelling","Music, sound and audio production"],traits:[{creative:4,technical:3},{creative:4,technical:3},{creative:4,analytical:3},{creative:4,technical:3}]},
+        {q:"How do you approach a new creative brief?",opts:["Immerse in research and reference","Sketch ideas rapidly and freely","Discuss the vision deeply with the client","Define the problem clearly before designing"],traits:[{analytical:4,creative:3},{creative:4,practical:3},{social:4,creative:3},{analytical:4,creative:3}]},
+        {q:"How proficient are you with creative technology tools?",opts:["Expert – tools are an extension of my craft","Proficient in the key industry tools","Learning and steadily improving","Prefer analogue and manual methods"],traits:[{technical:4,creative:3},{technical:3,creative:3},{technical:2,creative:2},{creative:4,practical:2}]},
+        {q:"How do you manage creative projects with strict deadlines?",opts:["Plan meticulously with built-in buffer","Work intensely as the deadline nears","Balance multiple projects simultaneously","Find deadline pressure genuinely motivating"],traits:[{organized:4,practical:3},{practical:3,creative:3},{organized:3,practical:3},{creative:3,practical:3}]},
+        {q:"How important is collaboration in your creative process?",opts:["Essential – dialogue elevates the work","Important for certain project types","Prefer mostly solo creative work","Strongly prefer to create entirely alone"],traits:[{social:4,creative:3},{social:3,creative:3},{creative:3,practical:2},{creative:4,analytical:2}]},
+        {q:"How do you feel about commercial vs purely artistic work?",opts:["Embrace commercial – constraints spark creativity","Balance art and commerce thoughtfully","Prefer artistic projects over commercial","Strongly prefer pure artistic expression"],traits:[{practical:4,creative:3},{creative:3,practical:3},{creative:4,analytical:2},{creative:4,empathetic:3}]},
+        {q:"How important is cultural awareness in your creative output?",opts:["Crucial – creativity without culture is hollow","Very important to my practice","Relevant for certain specific projects","Not a primary concern for me"],traits:[{empathetic:4,social:3,creative:3},{empathetic:3,creative:3},{empathetic:2,creative:2},{technical:3,practical:3}]},
+        {q:"How do you build your personal creative style?",opts:["Through deliberate experimentation","Studying and referencing creative masters","Through client feedback over time","Style evolves naturally through practice"],traits:[{creative:4,analytical:3},{creative:3,analytical:3},{social:3,practical:2},{creative:3,practical:3}]},
+        {q:"How do you handle creative blocks effectively?",opts:["Change environment and seek new inspiration","Return to fundamentals and daily practice","Research and fill knowledge gaps","Take a real break and return fresh"],traits:[{creative:4,practical:3},{practical:4,creative:3},{analytical:3,creative:3},{practical:3,creative:2}]},
+        {q:"How do you present creative work to clients or stakeholders?",opts:["Tell a compelling story around the work","Walk through the rationale clearly","Show multiple options and seek direction","Present with confidence and conviction"],traits:[{creative:4,social:4},{analytical:3,social:3},{social:3,empathetic:3},{leadership:4,creative:3}]},
+        {q:"How important is maintaining an active creative portfolio?",opts:["Essential – it is my primary career asset","Very important and actively maintained","Useful but I have not prioritised it","Not a current focus for me"],traits:[{practical:4,technical:3},{practical:3,technical:2},{practical:2,creative:2},{analytical:2,social:2}]},
+        {q:"How do you stay inspired and avoid creative stagnation?",opts:["Travel, art, culture and diverse experiences","Follow creative communities and online spaces","Push personal passion projects outside work","Attend workshops and masterclasses regularly"],traits:[{creative:4,empathetic:3},{creative:3,technical:2},{creative:4,practical:3},{social:3,creative:3}]},
+        {q:"How do you feel about directing others in creative projects?",opts:["Love it – I have a strong creative vision","Enjoy collaborating as an equal co-creator","Prefer to contribute my own individual work","Prefer to focus purely on execution"],traits:[{leadership:4,creative:3},{social:4,creative:3},{creative:4,technical:3},{technical:4,practical:3}]},
+        {q:"How do you handle a project requiring a style you personally dislike?",opts:["Commit fully – always serve the brief","Negotiate to find a creative middle ground","Complete it professionally without complaint","Push back and propose creative alternatives"],traits:[{practical:4,organized:3},{social:4,creative:3},{practical:3,organized:3},{creative:4,leadership:3}]},
+        {q:"How do you feel about the business side of creative work?",opts:["Embrace it – freelancers need business skills","Understand it matters and actively learn it","Partner with others to manage it","Strongly prefer someone else handles it"],traits:[{practical:4,analytical:3},{analytical:3,practical:3},{social:3,practical:2},{creative:4,technical:3}]},
+        {q:"How do you approach typography and visual hierarchy?",opts:["Deep expertise – it is craft I genuinely love","Skilled and apply it thoughtfully always","Know the basics and apply when needed","Less of a focus area in my work"],traits:[{creative:4,technical:4},{creative:3,technical:3},{creative:2,technical:2},{creative:2,social:2}]},
+        {q:"What is your long-term creative career vision?",opts:["Recognised artist or designer with global reach","Creative director of a studio or agency","Build my own distinctive creative brand","A consistent and fulfilling creative career"],traits:[{creative:4,technical:4},{leadership:4,creative:4},{practical:4,creative:3},{organized:3,practical:3}]}
+    ]
+};
+
+// Generic bank (for categories without dedicated banks)
+function getQuestions(category) {
+    const map = { science:'engineering', psychology:'medical', education:'business', legal:'business', hospitality:'creative', social:'medical' };
+    return QUESTION_BANKS[category] || QUESTION_BANKS[map[category]] || QUESTION_BANKS.engineering;
+}
+
+// Career profiles
+const CAREER_PROFILES = {
+    engineering:{
+        "Software Engineer":         {traits:{analytical:55,technical:60},salary:"₹6–25 LPA",icon:"💻",desc:"Build robust software systems, applications and platforms."},
+        "Data Scientist":            {traits:{analytical:65,technical:50},salary:"₹8–30 LPA",icon:"📊",desc:"Extract insights from complex datasets using statistics and ML."},
+        "Cloud Architect":           {traits:{technical:65,analytical:50},salary:"₹12–40 LPA",icon:"☁️",desc:"Design and manage scalable cloud infrastructure."},
+        "Mechanical Engineer":       {traits:{practical:55,technical:50,analytical:45},salary:"₹4–18 LPA",icon:"⚙️",desc:"Design and manufacture mechanical systems and components."},
+        "Civil Engineer":            {traits:{practical:60,analytical:45,organized:50},salary:"₹4–15 LPA",icon:"🏗️",desc:"Plan, design and oversee construction projects."},
+        "Embedded Systems Engineer": {traits:{technical:65,analytical:55,practical:50},salary:"₹5–20 LPA",icon:"🔌",desc:"Program microcontrollers and design hardware systems."},
+        "Environmental Engineer":    {traits:{empathetic:50,analytical:50,practical:50},salary:"₹5–16 LPA",icon:"🌿",desc:"Develop innovative solutions to environmental challenges."},
+        "Engineering Manager":       {traits:{leadership:60,analytical:50,organized:55},salary:"₹18–50 LPA",icon:"🧑‍💼",desc:"Lead engineering teams and drive technical strategy."}
+    },
+    medical:{
+        "General Physician (MBBS)":  {traits:{empathetic:55,analytical:55,social:50},salary:"₹6–25 LPA",icon:"👨‍⚕️",desc:"Diagnose and treat a wide range of medical conditions."},
+        "Surgeon":                   {traits:{practical:65,technical:55,analytical:50},salary:"₹15–60 LPA",icon:"🔬",desc:"Perform surgical procedures with precision and care."},
+        "Psychiatrist":              {traits:{empathetic:65,social:60,analytical:50},salary:"₹8–30 LPA",icon:"🧠",desc:"Diagnose and treat mental health and emotional disorders."},
+        "Medical Researcher":        {traits:{analytical:65,technical:55},salary:"₹6–20 LPA",icon:"🧪",desc:"Advance medical knowledge through rigorous research."},
+        "Nurse Practitioner":        {traits:{empathetic:60,social:55,practical:55},salary:"₹3–12 LPA",icon:"🩺",desc:"Provide direct and compassionate patient care."},
+        "Pharmacist":                {traits:{analytical:55,technical:50,organized:55},salary:"₹4–15 LPA",icon:"💊",desc:"Dispense medications safely and counsel patients."},
+        "Public Health Officer":     {traits:{analytical:55,social:55,empathetic:50},salary:"₹5–18 LPA",icon:"🌍",desc:"Improve community and population-level health outcomes."},
+        "Physical Therapist":        {traits:{empathetic:55,practical:60,social:50},salary:"₹3–12 LPA",icon:"🏃",desc:"Rehabilitate patients through targeted physical therapy."}
+    },
+    business:{
+        "Management Consultant":     {traits:{analytical:60,leadership:55,social:50},salary:"₹10–40 LPA",icon:"📋",desc:"Advise organisations on strategy and operational excellence."},
+        "Investment Banker":         {traits:{analytical:65,practical:55,leadership:50},salary:"₹12–60 LPA",icon:"💹",desc:"Execute high-stakes financial transactions and M&A deals."},
+        "Marketing Manager":         {traits:{creative:55,social:55,analytical:50},salary:"₹6–25 LPA",icon:"📣",desc:"Develop and execute compelling brand and marketing strategies."},
+        "Entrepreneur":              {traits:{leadership:60,creative:55,practical:60},salary:"Variable",icon:"🚀",desc:"Build, launch and grow your own business ventures."},
+        "HR Manager":                {traits:{social:60,empathetic:55,organized:55},salary:"₹5–20 LPA",icon:"🤝",desc:"Manage talent, culture and people strategy."},
+        "Finance Manager":           {traits:{analytical:60,organized:60,practical:50},salary:"₹8–30 LPA",icon:"💰",desc:"Lead financial planning, analysis and reporting."},
+        "Operations Manager":        {traits:{organized:60,practical:60,leadership:50},salary:"₹6–22 LPA",icon:"⚙️",desc:"Streamline business processes and drive operational efficiency."},
+        "Business Analyst":          {traits:{analytical:60,technical:45,social:50},salary:"₹5–18 LPA",icon:"📈",desc:"Bridge business needs and technical solutions effectively."}
+    },
+    creative:{
+        "UX/UI Designer":            {traits:{creative:60,technical:50,empathetic:50},salary:"₹5–22 LPA",icon:"🎨",desc:"Design intuitive, accessible and beautiful digital experiences."},
+        "Graphic Designer":          {traits:{creative:65,technical:50},salary:"₹3–15 LPA",icon:"✏️",desc:"Create compelling visual communications and brand identities."},
+        "Art Director":              {traits:{creative:65,leadership:50,technical:50},salary:"₹8–30 LPA",icon:"🖼️",desc:"Lead the visual style, creative direction and brand vision."},
+        "Film/Video Director":       {traits:{creative:65,leadership:55,social:50},salary:"₹5–50 LPA",icon:"🎬",desc:"Direct cinematic and video storytelling projects."},
+        "Content Creator":           {traits:{creative:60,social:50,technical:45},salary:"₹3–20 LPA",icon:"📹",desc:"Produce engaging content across digital platforms."},
+        "Copywriter":                {traits:{creative:60,analytical:45,social:45},salary:"₹3–18 LPA",icon:"✍️",desc:"Craft persuasive, engaging written content and campaigns."},
+        "Musician/Music Producer":   {traits:{creative:65,technical:50,practical:45},salary:"₹2–20 LPA",icon:"🎵",desc:"Create, perform and produce original music."},
+        "Fashion Designer":          {traits:{creative:65,practical:50,empathetic:45},salary:"₹3–20 LPA",icon:"👗",desc:"Design innovative clothing and wearable collections."}
+    }
+};
+
+function getCareerProfiles(category) {
+    const map = { science:'engineering', psychology:'medical', education:'business', legal:'business', hospitality:'creative', social:'medical' };
+    return CAREER_PROFILES[category] || CAREER_PROFILES[map[category]] || CAREER_PROFILES.engineering;
+}
+
+// ── SCORING ──
+function computeTraits(answers, questions) {
+    const raw = {}, maxP = {};
+    TRAITS.forEach(t => { raw[t]=0; maxP[t]=0; });
+    questions.forEach((q,qi) => {
+        const chosen = answers[qi];
+        if (chosen===undefined) return;
+        const map = q.traits[chosen] || {};
+        Object.entries(map).forEach(([t,v]) => {
+            raw[t] = (raw[t]||0) + v;
+            if (v > 0) maxP[t] = (maxP[t]||0) + 4;
+        });
+    });
+    const scores = {};
+    TRAITS.forEach(t => {
+        const max = maxP[t]||1;
+        scores[t] = Math.min(100, Math.max(0, Math.round((raw[t]/max)*100)));
+    });
+    return scores;
+}
+
+function matchCareers(traitScores, category) {
+    const profiles = getCareerProfiles(category);
+    const results = Object.entries(profiles).map(([name, p]) => {
+        const reqs = Object.entries(p.traits);
+        let wSum = 0, sSum = 0;
+        reqs.forEach(([t,thresh]) => {
+            const w = thresh/100;
+            wSum += w;
+            const ts = traitScores[t]||0;
+            const contrib = ts >= thresh ? ts*w : ts*w*(ts/thresh);
+            sSum += contrib;
+        });
+        const matchPct = Math.min(99, Math.max(30, Math.round((sSum/wSum))));
+        return { name, matchPct, ...p };
+    });
+    return results.sort((a,b) => b.matchPct - a.matchPct);
+}
+
+// ── CATEGORIES ──
+const CATS = {
+    engineering:{title:"Engineering & Technology",icon:"⚙️",g:"linear-gradient(45deg,#FF6B6B,#4ECDC4)",desc:"Software, hardware, civil, mechanical & more",
+        subs:{computer:"Computer Science & Software",mechanical:"Mechanical Engineering",cloud:"Cloud Computing & DevOps",civil:"Civil & Construction",electrical:"Electrical Engineering",aerospace:"Aerospace Engineering",biomedical:"Biomedical Engineering",environmental:"Environmental Engineering"}},
+    medical:{title:"Medical & Healthcare",icon:"🏥",g:"linear-gradient(45deg,#667eea,#764ba2)",desc:"Medicine, nursing, pharmacy, research & more",
+        subs:{general:"General Medicine (MBBS)",nursing:"Nursing & Patient Care",pharmacy:"Pharmacy",surgery:"Surgery & Surgical Specialties",research:"Medical Research",therapy:"Physical Therapy",veterinary:"Veterinary Medicine",public_health:"Public Health"}},
+    business:{title:"Business & Finance",icon:"💼",g:"linear-gradient(45deg,#f093fb,#f5576c)",desc:"Management, finance, marketing, entrepreneurship",
+        subs:{management:"Business Management",finance:"Finance & Investment",marketing:"Marketing",consulting:"Business Consulting",entrepreneurship:"Entrepreneurship",hr:"Human Resources",operations:"Operations & Supply Chain",accounting:"Accounting & Auditing"}},
+    creative:{title:"Creative Arts & Media",icon:"🎨",g:"linear-gradient(45deg,#4facfe,#00f2fe)",desc:"Design, media, writing, music, film & more",
+        subs:{design:"Graphic & Visual Design",media:"Digital Media & Content",writing:"Creative Writing & Journalism",photography:"Photography & Videography",music:"Music Production & Audio",film:"Film & Video Production",fashion:"Fashion Design",animation:"Animation & Game Design"}},
+    science:{title:"Science & Research",icon:"🔬",g:"linear-gradient(45deg,#a8edea,#fed6e3)",desc:"Biology, chemistry, physics, research careers",
+        subs:{biology:"Biology & Life Sciences",chemistry:"Chemistry",physics:"Physics & Applied Physics",environmental:"Environmental Science",mathematics:"Mathematics & Statistics",forensic:"Forensic Science",agricultural:"Agricultural Sciences",marine:"Marine Biology"}},
+    psychology:{title:"Psychology & Mental Health",icon:"🧠",g:"linear-gradient(45deg,#667eea,#f093fb)",desc:"Clinical, counselling, organisational & more",
+        subs:{clinical:"Clinical Psychology",cognitive:"Cognitive Psychology",counseling:"Counselling & Therapy",social:"Social Psychology",neuropsychology:"Neuropsychology",forensic_psych:"Forensic Psychology",organizational:"Organisational Psychology",sports_psych:"Sports Psychology"}},
+    education:{title:"Education & Teaching",icon:"📚",g:"linear-gradient(45deg,#ffecd2,#fcb69f)",desc:"Teaching, training, curriculum & administration",
+        subs:{primary:"Primary Education",secondary:"Secondary Education",higher:"Higher Education",special:"Special Education",online:"Online & E-Learning",training:"Corporate Training",early_childhood:"Early Childhood Education",curriculum:"Curriculum Development"}},
+    legal:{title:"Legal & Law Services",icon:"⚖️",g:"linear-gradient(45deg,#2c3e50,#667eea)",desc:"Corporate, criminal, family, IP law & more",
+        subs:{corporate:"Corporate Law",criminal:"Criminal Law",family:"Family Law",intellectual:"Intellectual Property",international_law:"International Law",tax_law:"Tax Law",litigation:"Litigation",paralegal:"Paralegal & Support"}}
+};
+
+// ── STATE ──
+let S = { cat:'', sub:'', qs:[], ans:{}, cur:0 };
+
+// ── UI ──
+function showPage(id){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0,0);
+}
+function filterCats(){
+    const q = document.getElementById('catSearch').value.toLowerCase();
+    renderCats(q);
+}
+function renderCats(f=''){
+    const g = document.getElementById('catGrid');
+    const keys = Object.keys(CATS).filter(k=>!f||CATS[k].title.toLowerCase().includes(f)||CATS[k].desc.toLowerCase().includes(f));
+    g.innerHTML = keys.map(k=>`
+        <div class="cat-card" onclick="pickCat('${k}')">
+            <div class="cat-icon" style="background:${CATS[k].g}">${CATS[k].icon}</div>
+            <h3>${CATS[k].title}</h3>
+            <p>${CATS[k].desc}</p>
+        </div>`).join('');
+}
+function pickCat(k){
+    S.cat = k;
+    document.getElementById('sub-title').textContent = CATS[k].title;
+    document.getElementById('sub-grid').innerHTML = Object.entries(CATS[k].subs).map(([sk,sv])=>`
+        <div class="sub-opt" onclick="startQuiz('${sk}')">
+            <h4>${sv}</h4>
+            <p>20-question targeted assessment</p>
+        </div>`).join('');
+    showPage('pg-sub');
+}
+function startQuiz(sk){
+    S.sub = sk; S.ans = {}; S.cur = 0;
+    S.qs = getQuestions(S.cat);
+    document.getElementById('quiz-title').textContent = CATS[S.cat].title+' Assessment';
+    document.getElementById('quiz-sub').textContent = CATS[S.cat].subs[sk]||sk;
+    document.getElementById('qTotal').textContent = S.qs.length;
+    loadQ();
+    showPage('pg-quiz');
+}
+function loadQ(){
+    const q = S.qs[S.cur], tot = S.qs.length;
+    const pct = Math.round(((S.cur+1)/tot)*100);
+    document.getElementById('qNum').textContent = S.cur+1;
+    document.getElementById('qPct').textContent = pct+'%';
+    document.getElementById('progFill').style.width = pct+'%';
+    document.getElementById('qText').textContent = q.q;
+    document.getElementById('opts').innerHTML = q.opts.map((o,i)=>`
+        <button class="opt${S.ans[S.cur]===i?' selected':''}" onclick="pick(${i},this)">${o}</button>`).join('');
+    document.getElementById('prevBtn').style.display = S.cur>0?'block':'none';
+    const nb = document.getElementById('nextBtn');
+    nb.disabled = S.ans[S.cur]===undefined;
+    nb.textContent = S.cur===tot-1?'✅ Finish & See Results':'Next →';
+}
+function pick(i,el){
+    document.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
+    el.classList.add('selected');
+    S.ans[S.cur]=i;
+    document.getElementById('nextBtn').disabled=false;
+}
+function prevQ(){ if(S.cur>0){S.cur--;loadQ();} }
+function nextQ(){
+    if(S.cur<S.qs.length-1){S.cur++;loadQ();}
+    else submitQuiz();
+}
+
+async function submitQuiz(){
+    document.getElementById('loadingOverlay').style.display='flex';
+    const traits = computeTraits(S.ans, S.qs);
+    const careers = matchCareers(traits, S.cat);
+    const top = careers[0];
+    const suitability = top.matchPct>=75?'highly':top.matchPct>=55?'moderately':'not';
+    const overallScore = Math.round(Object.values(traits).reduce((a,b)=>a+b,0)/TRAITS.length);
+
+    const payload = {
+        category: CATS[S.cat]?.title||S.cat,
+        subcategory: CATS[S.cat]?.subs?.[S.sub]||S.sub,
+        suitability, score:overallScore,
+        top_career: top.name,
+        traits, careers: careers.slice(0,6),
+        taken_at: new Date().toISOString()
+    };
+
+    // Auto-save if logged in
+    const username = getUsername();
+    let savedId = null;
+    if(username){
+        try{
+            const r = await fetch('save_result.php',{
+                method:'POST',headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({username,...payload,result_data:payload})
+            });
+            const d = await r.json();
+            if(d.success) savedId = d.id;
+        } catch(e){ console.warn('Save failed',e); }
+    }
+
+    sessionStorage.setItem('latestResult', JSON.stringify({...payload,savedId}));
+    document.getElementById('loadingOverlay').style.display='none';
+    window.location.href='results.html';
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+    renderCats();
+    const p = new URLSearchParams(window.location.search);
+    const cp = p.get('category');
+    if(cp){
+        const [mc,sc] = cp.split('/');
+        if(CATS[mc]){ pickCat(mc); if(sc&&CATS[mc].subs[sc]) setTimeout(()=>startQuiz(sc),50); }
+    }
+});
+</script>
+</body>
+</html>

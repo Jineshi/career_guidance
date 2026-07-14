@@ -1,0 +1,19 @@
+# ── SECRET FILES — never upload these ──
+.env
+config_local.php
+
+# ── XAMPP / Server files — not needed on GitHub ──
+/logs/
+*.log
+
+# ── OS junk ──
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Editor folders ──
+.vscode/
+.idea/
+
+# ── PHP cache ──
+*.cache

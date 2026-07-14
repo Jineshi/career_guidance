@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerGuide - Account</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; line-height: 1.6; color: #333; background: #f8f9fa; }
+
+        /* ── NAV ── */
+        header { background: white; box-shadow: 0 2px 10px rgba(0,0,0,.1); position: sticky; top: 0; z-index: 100; }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; max-width: 1400px; margin: 0 auto; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #2c3e50; text-decoration: none; }
+        .nav-links { display: flex; list-style: none; gap: 1.5rem; align-items: center; }
+        .nav-links a { text-decoration: none; color: #666; font-weight: 500; padding: .5rem 1rem; border-radius: 5px; transition: all .3s; display: flex; align-items: center; gap: .4rem; font-size: .93rem; }
+        .nav-links a:hover { background: #f0f0f0; color: #333; }
+        .nav-links a.active { background: #2c3e50; color: white; }
+        .icon { width: 17px; height: 17px; }
+
+        /* ── HERO ── */
+        .hero { text-align: center; padding: 2.5rem 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .hero h1 { font-size: 2.2rem; margin-bottom: .4rem; font-weight: 700; }
+        .hero p { font-size: 1rem; opacity: .9; }
+
+        /* ── LAYOUT ── */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        .tabs { display: flex; gap: .5rem; background: white; padding: .7rem; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,.08); margin: 2rem 0 1.5rem; flex-wrap: wrap; }
+        .tab { padding: .6rem 1.3rem; border-radius: 9px; cursor: pointer; font-weight: 600; font-size: .9rem; border: none; background: transparent; color: #666; transition: all .2s; }
+        .tab:hover { background: #f0f0f0; }
+        .tab.active { background: #667eea; color: white; box-shadow: 0 3px 10px rgba(102,126,234,.3); }
+        .panel { display: none; }
+        .panel.active { display: block; }
+        .card { background: white; border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,.07); }
+        .card h3 { color: #2c3e50; font-size: 1.2rem; margin-bottom: 1.5rem; padding-bottom: .7rem; border-bottom: 2px solid #f0f0f0; display: flex; align-items: center; gap: .5rem; }
+
+        /* ── PROFILE ── */
+        .avatar-circle { width: 90px; height: 90px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; color: white; font-size: 2.2rem; font-weight: 700; }
+        .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; margin-bottom: .4rem; font-weight: 600; color: #444; font-size: .92rem; }
+        .form-group input { width: 100%; padding: .85rem 1rem; border: 2px solid #e9ecef; border-radius: 10px; font-size: .97rem; background: #f8f9fa; transition: all .3s; }
+        .form-group input:focus { outline: none; border-color: #667eea; background: white; box-shadow: 0 0 0 3px rgba(102,126,234,.1); }
+        .form-group input:read-only { background: #f0f0f0; color: #888; cursor: not-allowed; }
+
+        /* ── INTERESTS ── */
+        .interest-tag { display: inline-flex; align-items: center; gap: .4rem; background: #667eea; color: white; padding: .4rem .9rem; border-radius: 20px; margin: .25rem; font-size: .85rem; cursor: pointer; transition: background .2s; }
+        .interest-tag:hover { background: #dc3545; }
+        .suggested-tag { display: inline-block; background: #f8f9fa; color: #666; padding: .4rem .9rem; border-radius: 20px; margin: .25rem; font-size: .85rem; cursor: pointer; border: 2px solid #e9ecef; transition: all .2s; }
+        .suggested-tag:hover { background: #e9f4ff; border-color: #667eea; color: #667eea; }
+        .add-interest-row { display: flex; gap: .8rem; margin-bottom: 1rem; }
+        .add-interest-row select { flex: 1; padding: .8rem 1rem; border: 2px solid #e9ecef; border-radius: 10px; font-size: .93rem; background: #f8f9fa; }
+        .add-btn { width: 44px; height: 44px; background: #667eea; color: white; border: none; border-radius: 9px; cursor: pointer; font-size: 1.4rem; font-weight: bold; transition: all .2s; flex-shrink: 0; }
+        .add-btn:hover { background: #5a6fc8; transform: scale(1.05); }
+
+        /* ── CAREER INTERESTS FROM DB ── */
+        .career-int-card { display: inline-flex; align-items: center; gap: .5rem; background: linear-gradient(135deg,#f8f9ff,white); border: 2px solid #e9f0ff; border-radius: 12px; padding: .5rem 1rem; margin: .25rem; font-size: .88rem; font-weight: 600; color: #2c3e50; }
+        .career-int-card .del { cursor: pointer; color: #ccc; font-size: .9rem; margin-left: .3rem; transition: color .2s; }
+        .career-int-card .del:hover { color: #dc3545; }
+
+        /* ── BUTTONS ── */
+        .btn { background: #667eea; color: white; border: none; padding: .8rem 1.8rem; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: .95rem; transition: all .3s; text-decoration: none; display: inline-block; }
+        .btn:hover { background: #5a6fc8; transform: translateY(-2px); }
+        .btn-green { background: linear-gradient(135deg, #28a745, #20c997); }
+        .btn-green:hover { background: linear-gradient(135deg,#218838,#1aaf85); }
+        .btn-red { background: linear-gradient(135deg, #dc3545, #c82333); }
+        .btn-red:hover { background: linear-gradient(135deg,#c82333,#a71d2a); }
+        .btn-sec { background: #6c757d; }
+        .btn-sec:hover { background: #5a6268; }
+        .btn-sm { padding: .5rem 1rem; font-size: .83rem; }
+        .action-row { display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
+
+        /* ── STATS ── */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(130px,1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+        .stat-box { background: #f8f9fa; border-radius: 12px; padding: 1.2rem; text-align: center; border-top: 3px solid #667eea; }
+        .stat-box.green { border-top-color: #28a745; }
+        .stat-box.orange { border-top-color: #fd7e14; }
+        .stat-box .num { font-size: 1.8rem; font-weight: 700; color: #2c3e50; }
+        .stat-box .lbl { font-size: .78rem; color: #888; margin-top: .2rem; }
+
+        /* ── ALERTS ── */
+        .alert { padding: .9rem 1.2rem; border-radius: 10px; margin-bottom: 1rem; font-size: .92rem; display: none; }
+        .alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .alert-error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .alert-warn { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+
+        /* ── PASSWORD ── */
+        .pw-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+        /* ── TOAST ── */
+        .toast { position: fixed; bottom: 2rem; right: 2rem; padding: .9rem 1.8rem; border-radius: 10px; color: white; font-weight: 600; z-index: 9999; opacity: 0; transform: translateY(10px); transition: all .3s; pointer-events: none; font-size: .92rem; max-width: 340px; }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.ok { background: #28a745; }
+        .toast.err { background: #dc3545; }
+        .toast.info { background: #2c3e50; }
+
+        /* ── LOADING ── */
+        .skeleton { background: linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; height: 40px; margin-bottom: .8rem; }
+        @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+        @media(max-width:768px) {
+            .nav-links { display: none; }
+            .profile-grid { grid-template-columns: 1fr; }
+            .pw-row { grid-template-columns: 1fr; }
+            .action-row { flex-direction: column; }
+            .action-row .btn { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <a class="logo" href="index.html">🎯 CareerGuide</a>
+        <ul class="nav-links">
+            <li><a href="index.html">
+                <svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>Home
+            </a></li>
+            <li><a href="tests.html">
+                <svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>Tests
+            </a></li>
+            <li><a href="dashboard.html">
+                <svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zm6-4a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zm6-3a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></svg>Dashboard
+            </a></li>
+            <li><a href="aibot.html">
+                <svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"/></svg>AI Bot
+            </a></li>
+            <li><a href="account.html" class="active">
+                <svg class="icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>Account
+            </a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="hero">
+    <h1 id="heroTitle">👤 My Account</h1>
+    <p id="heroSub">Manage your profile, interests and security settings</p>
+</div>
+
+<div class="container" style="padding-bottom: 3rem;">
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab active" onclick="switchTab('profile', this)">👤 Profile</button>
+        <button class="tab" onclick="switchTab('interests', this)">❤️ Interests</button>
+        <button class="tab" onclick="switchTab('security', this)">🔒 Security</button>
+    </div>
+
+    <!-- ══ PROFILE TAB ══ -->
+    <div id="panel-profile" class="panel active">
+        <div class="stats-grid">
+            <div class="stat-box"><div class="num" id="statTests">–</div><div class="lbl">Tests Taken</div></div>
+            <div class="stat-box green"><div class="num" id="statInterests">–</div><div class="lbl">Career Interests</div></div>
+            <div class="stat-box orange"><div class="num" id="statExams">–</div><div class="lbl">Saved Exams</div></div>
+        </div>
+
+        <div class="card">
+            <h3>👤 Personal Information</h3>
+            <div style="text-align:center; margin-bottom:1.5rem;">
+                <div class="avatar-circle" id="avatarCircle">–</div>
+                <div style="font-weight:700;color:#2c3e50;font-size:1.1rem" id="avatarName">Loading…</div>
+                <div style="color:#888;font-size:.88rem" id="avatarUsername"></div>
+            </div>
+
+            <div id="profileAlert" class="alert"></div>
+
+            <div class="profile-grid">
+                <div>
+                    <div class="form-group">
+                        <label>Username (cannot change)</label>
+                        <input type="text" id="fieldUsername" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="fieldName" placeholder="Your full name">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="fieldEmail" placeholder="your@email.com">
+                    </div>
+                </div>
+                <div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="fieldPhone" placeholder="+91 98765 43210">
+                    </div>
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" id="fieldLocation" placeholder="City, State">
+                    </div>
+                    <div class="form-group">
+                        <label>Member Since</label>
+                        <input type="text" id="fieldJoined" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-row">
+                <button class="btn btn-green" onclick="saveProfile()">💾 Save Changes</button>
+                <button class="btn btn-red" onclick="logout()">🚪 Logout</button>
+                <a href="dashboard.html" class="btn btn-sec">📊 My Dashboard</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ INTERESTS TAB ══ -->
+    <div id="panel-interests" class="panel">
+
+        <!-- Career Interests from DB -->
+        <div class="card">
+            <h3>❤️ Saved Career Interests
+                <span style="font-size:.78rem;color:#888;font-weight:400;margin-left:.5rem">— saved from homepage & results</span>
+            </h3>
+            <div id="careerInterestsArea">
+                <div class="skeleton"></div>
+                <div class="skeleton" style="width:70%"></div>
+            </div>
+            <div style="margin-top:1rem">
+                <a href="index.html" class="btn btn-sm">Browse Careers</a>
+                <a href="results.html" class="btn btn-sm btn-sec" style="margin-left:.5rem">Latest Results</a>
+            </div>
+        </div>
+
+        <!-- Hobby / Skill Interests (localStorage) -->
+        <div class="card">
+            <h3>🏷️ My Skills & Hobby Interests</h3>
+            <p style="color:#888;font-size:.88rem;margin-bottom:1rem">These help personalise your homepage career recommendations.</p>
+
+            <div class="add-interest-row">
+                <select id="interestDropdown">
+                    <option value="">Select an interest to add…</option>
+                    <optgroup label="Technology & Digital">
+                        <option>Programming</option>
+                        <option>Web Development</option>
+                        <option>Data Science</option>
+                        <option>Artificial Intelligence</option>
+                        <option>Cybersecurity</option>
+                        <option>Cloud Computing</option>
+                    </optgroup>
+                    <optgroup label="Creative & Media">
+                        <option>Design</option>
+                        <option>Photography</option>
+                        <option>Art</option>
+                        <option>Writing</option>
+                        <option>Music</option>
+                        <option>Film & Video</option>
+                    </optgroup>
+                    <optgroup label="Business">
+                        <option>Business</option>
+                        <option>Marketing</option>
+                        <option>Finance</option>
+                        <option>Entrepreneurship</option>
+                    </optgroup>
+                    <optgroup label="Science & Healthcare">
+                        <option>Biology</option>
+                        <option>Chemistry</option>
+                        <option>Medicine</option>
+                        <option>Psychology</option>
+                    </optgroup>
+                    <optgroup label="Personal">
+                        <option>Sports</option>
+                        <option>Travel</option>
+                        <option>Cooking</option>
+                        <option>Mathematics</option>
+                    </optgroup>
+                </select>
+                <button class="add-btn" onclick="addHobbyInterest()">+</button>
+            </div>
+
+            <h4 style="color:#2c3e50;margin-bottom:.7rem;font-size:.95rem">Your Current Interests</h4>
+            <div id="hobbyInterestsArea" style="margin-bottom:1.5rem;min-height:40px">
+                <p style="color:#aaa;font-size:.88rem;font-style:italic">None added yet.</p>
+            </div>
+
+            <h4 style="color:#2c3e50;margin-bottom:.7rem;font-size:.95rem">Suggested</h4>
+            <div id="suggestedArea"></div>
+
+            <div class="action-row">
+                <button class="btn btn-green btn-sm" onclick="saveHobbyInterests()">💾 Save Interests</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ SECURITY TAB ══ -->
+    <div id="panel-security" class="panel">
+        <div class="card">
+            <h3>🔒 Change Password</h3>
+            <div id="pwAlert" class="alert"></div>
+            <div class="pw-row">
+                <div class="form-group">
+                    <label>Current Password</label>
+                    <input type="password" id="pwCurrent" placeholder="Enter current password">
+                </div>
+                <div style="grid-column:1/-1"></div>
+                <div class="form-group">
+                    <label>New Password</label>
+                    <input type="password" id="pwNew" placeholder="At least 6 characters">
+                </div>
+                <div class="form-group">
+                    <label>Confirm New Password</label>
+                    <input type="password" id="pwConfirm" placeholder="Repeat new password">
+                </div>
+            </div>
+            <button class="btn btn-green" onclick="changePassword()">🔑 Update Password</button>
+        </div>
+
+        <div class="card">
+            <h3>⚠️ Account Actions</h3>
+            <p style="color:#888;margin-bottom:1.5rem;font-size:.92rem">Logging out will clear your session from this device.</p>
+            <button class="btn btn-red" onclick="logout()">🚪 Logout</button>
+        </div>
+    </div>
+
+</div><!-- /container -->
+
+<div id="toast" class="toast"></div>
+
+<script>
+// ── AUTH HELPER ──
+function getUsername() {
+    try {
+        const cu = localStorage.getItem('currentUser');
+        if (cu) { const obj = JSON.parse(cu); if (obj && obj.username) return obj.username; }
+        const u = localStorage.getItem('username');
+        if (u) return u;
+    } catch(e) {}
+    return null;
+}
+
+// ── TOAST ──
+function toast(msg, type = 'info') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = 'toast show ' + type;
+    setTimeout(() => el.className = 'toast', 3500);
+}
+
+function showAlert(id, msg, type = 'success') {
+    const el = document.getElementById(id);
+    el.textContent = msg;
+    el.className = 'alert alert-' + type;
+    el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 4000);
+}
+
+// ── TABS ──
+function switchTab(id, btn) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-' + id).classList.add('active');
+}
+
+// ── HOBBY INTERESTS (localStorage) ──
+const SUGGESTED = ['Artificial Intelligence', 'Cybersecurity', 'Digital Marketing', 'Blockchain', 'Machine Learning', 'UX Design', 'Data Analytics', 'Public Speaking'];
+let hobbyInterests = [];
+
+function loadHobbyInterests() {
+    try {
+        const saved = localStorage.getItem('userInterests');
+        hobbyInterests = saved ? JSON.parse(saved) : [];
+    } catch(e) { hobbyInterests = []; }
+    renderHobbyInterests();
+    renderSuggested();
+}
+
+function renderHobbyInterests() {
+    const el = document.getElementById('hobbyInterestsArea');
+    if (!hobbyInterests.length) {
+        el.innerHTML = '<p style="color:#aaa;font-size:.88rem;font-style:italic">None added yet. Use the dropdown above.</p>';
+        return;
+    }
+    el.innerHTML = hobbyInterests.map(i =>
+        `<span class="interest-tag" onclick="removeHobby('${i}')">${i} ×</span>`
+    ).join('');
+}
+
+function renderSuggested() {
+    const el = document.getElementById('suggestedArea');
+    el.innerHTML = SUGGESTED.filter(s => !hobbyInterests.includes(s))
+        .map(s => `<span class="suggested-tag" onclick="addSuggested('${s}')">+ ${s}</span>`).join('');
+}
+
+function addHobbyInterest() {
+    const sel = document.getElementById('interestDropdown');
+    const val = sel.value;
+    if (val && !hobbyInterests.includes(val)) {
+        hobbyInterests.push(val);
+        renderHobbyInterests();
+        renderSuggested();
+    }
+    sel.value = '';
+}
+
+function addSuggested(val) {
+    if (!hobbyInterests.includes(val)) {
+        hobbyInterests.push(val);
+        renderHobbyInterests();
+        renderSuggested();
+    }
+}
+
+function removeHobby(val) {
+    hobbyInterests = hobbyInterests.filter(i => i !== val);
+    renderHobbyInterests();
+    renderSuggested();
+}
+
+function saveHobbyInterests() {
+    try { localStorage.setItem('userInterests', JSON.stringify(hobbyInterests)); } catch(e) {}
+    toast('Interests saved!', 'ok');
+}
+
+// ── CAREER INTERESTS (from DB) ──
+async function loadCareerInterests() {
+    const username = getUsername();
+    const el = document.getElementById('careerInterestsArea');
+    if (!username) {
+        el.innerHTML = '<p style="color:#888;font-style:italic">Log in to see saved career interests.</p>';
+        return;
+    }
+    try {
+        const r = await fetch('get_interests.php?username=' + encodeURIComponent(username));
+        const d = await r.json();
+        const list = d.interests || [];
+        document.getElementById('statInterests').textContent = list.length;
+        if (!list.length) {
+            el.innerHTML = '<p style="color:#aaa;font-style:italic;font-size:.9rem">No career interests saved yet. Browse careers on the homepage and click ❤️ I am Interested, or take a test.</p>';
+            return;
+        }
+        const ICONS = {"Software Engineer":"💻","Data Scientist":"📊","General Physician (MBBS)":"👨‍⚕️","Surgeon":"🔬","Psychiatrist":"🧠","Management Consultant":"📋","Investment Banker":"💹","Marketing Manager":"📣","Entrepreneur":"🚀","UX/UI Designer":"🎨","Graphic Designer":"✏️","Art Director":"🖼️","Fashion Designer":"👗"};
+        el.innerHTML = '<div style="display:flex;flex-wrap:wrap;gap:.4rem">' +
+            list.map(i => {
+                const icon = ICONS[i.career_name] || '🎯';
+                return `<span class="career-int-card">${icon} ${i.career_name}<span class="del" onclick="removeCareerInterest('${encodeURIComponent(i.career_name)}',this)">✕</span></span>`;
+            }).join('') + '</div>';
+    } catch(e) {
+        el.innerHTML = '<p style="color:#dc3545;font-size:.88rem">Could not load career interests. Check your connection.</p>';
+    }
+}
+
+async function removeCareerInterest(encodedName, delBtn) {
+    const username = getUsername();
+    const name = decodeURIComponent(encodedName);
+    if (!confirm('Remove ' + name + ' from interests?')) return;
+    delBtn.textContent = '…';
+    try {
+        const r = await fetch('save_interest.php', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ username, career_name: name, action: 'delete' })
+        });
+        const d = await r.json();
+        if (d.success) { toast(name + ' removed', 'info'); loadCareerInterests(); }
+        else toast('Error: ' + d.error, 'err');
+    } catch(e) { toast('Network error', 'err'); delBtn.textContent = '✕'; }
+}
+
+// ── PROFILE ──
+let profileData = {};
+
+async function loadProfile() {
+    const username = getUsername();
+    if (!username) {
+        toast('Please log in first', 'err');
+        setTimeout(() => window.location.href = 'login.html', 1500);
+        return;
+    }
+
+    document.getElementById('heroTitle').textContent = '👤 ' + username + '\'s Account';
+    document.getElementById('heroSub').textContent = 'Manage your profile, interests and security settings';
+    document.getElementById('avatarUsername').textContent = '@' + username;
+    document.getElementById('fieldUsername').value = username;
+
+    try {
+        const r = await fetch('fetch_user.php?username=' + encodeURIComponent(username));
+        const data = await r.json();
+
+        if (data.error) {
+            // User not found in DB - show what we know from localStorage
+            document.getElementById('avatarCircle').textContent = username[0].toUpperCase();
+            document.getElementById('avatarName').textContent = username;
+            return;
+        }
+
+        profileData = data;
+        document.getElementById('fieldName').value = data.name || '';
+        document.getElementById('fieldEmail').value = data.email || '';
+        document.getElementById('fieldPhone').value = data.phone || '';
+        document.getElementById('fieldLocation').value = data.location || '';
+        document.getElementById('fieldJoined').value = data.created_at
+            ? new Date(data.created_at).toLocaleDateString('en-IN', {day:'numeric',month:'long',year:'numeric'})
+            : '–';
+
+        // Avatar initials from name
+        const name = data.name || username;
+        const initials = name.trim().split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2) || username[0].toUpperCase();
+        document.getElementById('avatarCircle').textContent = initials;
+        document.getElementById('avatarName').textContent = name || username;
+
+    } catch(e) {
+        document.getElementById('avatarCircle').textContent = username[0].toUpperCase();
+        document.getElementById('avatarName').textContent = username;
+    }
+
+    // Load stats
+    loadStats(username);
+}
+
+async function loadStats(username) {
+    try {
+        const [results, exams] = await Promise.all([
+            fetch('get_results.php?username=' + encodeURIComponent(username)).then(r => r.json()).catch(() => ({})),
+            fetch('get_exams.php?username=' + encodeURIComponent(username)).then(r => r.json()).catch(() => ({}))
+        ]);
+        document.getElementById('statTests').textContent = (results.results || []).length;
+        document.getElementById('statExams').textContent = (exams.exams || []).length;
+    } catch(e) {}
+}
+
+async function saveProfile() {
+    const username = getUsername();
+    if (!username) { toast('Not logged in', 'err'); return; }
+
+    const name     = document.getElementById('fieldName').value.trim();
+    const email    = document.getElementById('fieldEmail').value.trim();
+    const phone    = document.getElementById('fieldPhone').value.trim();
+    const location = document.getElementById('fieldLocation').value.trim();
+
+    if (!name || !email) { showAlert('profileAlert', 'Name and email are required.', 'error'); return; }
+
+    try {
+        const r = await fetch('update_profile.php', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ username, name, email, phone, location })
+        });
+        const d = await r.json();
+        if (d.success) {
+            showAlert('profileAlert', '✅ Profile updated successfully!', 'success');
+            toast('Profile saved!', 'ok');
+            // Update avatar
+            const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+            document.getElementById('avatarCircle').textContent = initials;
+            document.getElementById('avatarName').textContent = name;
+            // Keep currentUser in sync
+            try {
+                const cu = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                cu.name = name; cu.email = email;
+                localStorage.setItem('currentUser', JSON.stringify(cu));
+            } catch(e) {}
+        } else {
+            showAlert('profileAlert', '❌ ' + (d.error || 'Save failed'), 'error');
+        }
+    } catch(e) {
+        showAlert('profileAlert', '❌ Network error. Check server connection.', 'error');
+    }
+}
+
+// ── CHANGE PASSWORD ──
+async function changePassword() {
+    const username = getUsername();
+    if (!username) { toast('Not logged in', 'err'); return; }
+
+    const current = document.getElementById('pwCurrent').value;
+    const newPw   = document.getElementById('pwNew').value;
+    const confirm = document.getElementById('pwConfirm').value;
+
+    if (!current || !newPw || !confirm) { showAlert('pwAlert', 'Please fill all three fields.', 'error'); return; }
+    if (newPw.length < 6) { showAlert('pwAlert', 'New password must be at least 6 characters.', 'error'); return; }
+    if (newPw !== confirm) { showAlert('pwAlert', 'New passwords do not match.', 'error'); return; }
+
+    try {
+        const r = await fetch('change_password.php', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ username, current_password: current, new_password: newPw })
+        });
+        const d = await r.json();
+        if (d.success) {
+            showAlert('pwAlert', '✅ Password changed successfully!', 'success');
+            toast('Password updated!', 'ok');
+            document.getElementById('pwCurrent').value = '';
+            document.getElementById('pwNew').value = '';
+            document.getElementById('pwConfirm').value = '';
+        } else {
+            showAlert('pwAlert', '❌ ' + (d.error || 'Failed to change password'), 'error');
+        }
+    } catch(e) {
+        showAlert('pwAlert', '❌ Network error. Check server connection.', 'error');
+    }
+}
+
+// ── LOGOUT ──
+function logout() {
+    if (!confirm('Are you sure you want to log out?')) return;
+    try {
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('username');
+    } catch(e) {}
+    window.location.href = 'login.html';
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', () => {
+    const username = getUsername();
+    if (!username) {
+        // Not logged in — redirect after short delay
+        document.querySelector('.hero h1').textContent = '🔐 Please Log In';
+        document.querySelector('.hero p').textContent = 'You need to log in to view your account.';
+        setTimeout(() => window.location.href = 'login.html', 1800);
+        return;
+    }
+    loadProfile();
+    loadHobbyInterests();
+    loadCareerInterests();
+});
+</script>
+</body>
+</html>
