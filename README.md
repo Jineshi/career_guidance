@@ -19,7 +19,7 @@ A full-stack web application that helps students and professionals discover suit
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/career-guidance.git
+git clone https://github.com/Jineshi/career_guidance.git
 ```
 
 ### 2. Copy to XAMPP
