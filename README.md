@@ -82,4 +82,4 @@ career_guidance/
 ```
 
 ## 👩‍💻 Author
-Jenny Jain — MIT Art Design & Technology University, Pune
+Jineshi Jain
